@@ -3,7 +3,7 @@ package templates
 import "sourdough/internal/models"
 
 templ Recipe(recipe *models.Recipe) {
-	@Layout("My Recipes") {
+	@Layout(recipe.Title) {
 		<article class="mt-10 print:mt-5">
 			<header id="recipe-header" class="flex flex-col">
 				<h2 class="font-display text-3xl font-bold print:text-2xl">{ recipe.Title }</h2>

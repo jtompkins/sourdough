@@ -29,7 +29,7 @@ func Login() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Login - Recipe App</title><link href=\"https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap\" rel=\"stylesheet\"><link href=\"/static/output.css\" rel=\"stylesheet\"></head><body class=\"bg-stone-200\"><main class=\"flex justify-center items-center h-full w-full\"><div class=\"bg-stone-900 px-10 py-8 rounded-lg shadow-md w-1/3\"><h2 class=\"text-center text-4xl font-display font-extrabold text-white\">Sourdough.</h2><div class=\"mt-8\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sourdough</title><link href=\"https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap\" rel=\"stylesheet\"><link href=\"/static/output.css\" rel=\"stylesheet\"></head><body class=\"bg-stone-200\"><main class=\"flex justify-center items-center h-full w-full\"><div class=\"bg-stone-900 px-10 py-8 rounded-lg shadow-md w-1/3\"><h2 class=\"text-center text-4xl font-display font-extrabold text-white\">Sourdough.</h2><div class=\"mt-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

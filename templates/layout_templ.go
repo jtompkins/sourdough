@@ -29,20 +29,20 @@ func Layout(title string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sourdough - ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/layout.templ`, Line: 9, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/layout.templ`, Line: 9, Col: 29}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " - Recipe App</title><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap\" rel=\"stylesheet\"><script src=\"https://unpkg.com/htmx.org@2.0.3\"></script><script src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\" defer></script><link href=\"/static/output.css\" rel=\"stylesheet\"></head><body class=\"flex flex-col items-center bg-stone-200\"><main class=\"flex lg:w-2/3 2xl:w-1/2 md:w-3/4 print:w-full sm:px-12 sm:w-full flex-col mt-40 print:mt-0\"><header class=\"w-full flex justify-between items-center\"><h1 class=\"text-4xl font-display font-extrabold print:text-3xl\"><a href=\"/\">Sourdough.</a></h1><nav class=\"print:invisible\"><div class=\"font-display font-bold rounded-lg transition px-8 py-2 hover:bg-stone-400 hover:text-white cursor-pointer\"><a href=\"/logout\">Logout</a></div></nav></header><section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</title><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap\" rel=\"stylesheet\"><script src=\"https://unpkg.com/htmx.org@2.0.3\"></script><script src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\" defer></script><link href=\"/static/output.css\" rel=\"stylesheet\"></head><body class=\"flex flex-col items-center bg-stone-200\"><main class=\"flex lg:w-2/3 2xl:w-1/2 md:w-3/4 print:w-full sm:px-12 sm:w-full flex-col mt-40 print:mt-0\"><header class=\"w-full flex justify-between items-center\"><h1 class=\"text-4xl font-display font-extrabold print:text-3xl\"><a href=\"/\">Sourdough.</a></h1><nav class=\"print:invisible\"><div class=\"font-display font-bold rounded-lg transition px-8 py-2 hover:bg-stone-400 hover:text-white cursor-pointer\"><a href=\"/logout\">Logout</a></div></nav></header><section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

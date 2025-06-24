@@ -46,7 +46,7 @@ func MyRecipes(recipes []*models.Recipe) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form action=\"/recipes\" method=\"POST\" class=\"flex flex-col mt-10 h-1/3 items-end\" hx-boost=\"false\"><textarea name=\"recipe\" id=\"recipe\" class=\"w-full h-full p-4 bg-stone-100 shadow-lg shadow-stone-800/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-blue-500\" rows=\"10\" placeholder=\"Paste your recipe here\"></textarea> <input type=\"submit\" value=\"Add\" class=\"bg-stone-300 hover:bg-stone-400 w-36 font-display font-bold hover:text-white text-xl mt-4 px-4 py-1 rounded-lg transition cursor-pointer\"></form><article class=\"mt-15\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form action=\"/recipes\" method=\"POST\" class=\"flex flex-col mt-10 h-1/3 items-end\" hx-boost=\"false\"><textarea name=\"recipe\" id=\"recipe\" class=\"w-full h-full p-4 bg-stone-100 shadow-lg shadow-stone-800/10 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-blue-500\" rows=\"10\" placeholder=\"Paste your recipe here\"></textarea> <input type=\"submit\" value=\"Add\" class=\"bg-stone-300 hover:bg-stone-400 w-36 font-display font-bold hover:text-white text-xl mt-4 px-4 py-1 rounded-lg transition cursor-pointer\"></form><article class=\"mt-15\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
