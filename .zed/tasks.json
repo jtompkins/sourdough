@@ -1,0 +1,6 @@
+[
+  {
+    "label": "Run app",
+    "command": "go run main.go"
+  }
+]

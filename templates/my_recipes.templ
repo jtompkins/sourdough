@@ -1,0 +1,51 @@
+package templates
+
+import "sourdough/internal/models"
+
+templ MyRecipes(recipes []*models.Recipe) {
+	@Layout("My Recipes") {
+		<form action="/recipes" method="POST" class="flex flex-col mt-10 h-1/3 items-end">
+			<textarea
+				name="recipe"
+				id="recipe"
+				class="w-full h-full p-4 bg-stone-100 shadow-lg shadow-stone-800/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-blue-500"
+				placeholder="Paste your recipe here"
+			></textarea>
+			<input type="submit" value="Add" class="bg-stone-300 hover:bg-stone-400 w-36 font-display font-bold hover:text-white text-xl mt-4 px-4 py-1 rounded-lg transition cursor-pointer"/>
+		</form>
+		<article class="mt-15">
+			for _, recipe := range recipes {
+				<div class="card">
+					<section class="mt-6">
+						<h3 class="font-display text-xl font-bold">{ recipe.Title }</h3>
+						<h4 class="mt-1">{ recipe.CookTime }, { recipe.NumberOfIngredients } ingredients. Serves { recipe.Servings }.</h4>
+					</section>
+				</div>
+			}
+			<section class="mt-6">
+				<h3 class="font-display text-xl font-bold">Chocolate-Covered Pickle Ice Cream with Mustard Sprinkles</h3>
+				<h4 class="mt-1">15 minutes, 3 ingredients. Serves 1.</h4>
+			</section>
+			<section class="mt-6">
+				<h3 class="font-display text-xl font-bold">Reverse Spaghetti Pancakes in Jellybean Sauce</h3>
+				<h4 class="mt-1">25 minutes, 12 ingredients. Serves 4.</h4>
+			</section>
+			<section class="mt-6">
+				<h3 class="font-display text-xl font-bold">Upside-Down Tuna Smoothie Casserole</h3>
+				<h4 class="mt-1">8 minutes, 2 ingredients. Serves 2.</h4>
+			</section>
+			<section class="mt-6">
+				<h3 class="font-display text-xl font-bold">Crunchy Water Soup with Invisible Croutons</h3>
+				<h4 class="mt-1">29 minutes, 1 ingredients. Serves 5.</h4>
+			</section>
+			<section class="mt-6">
+				<h3 class="font-display text-xl font-bold">Backwards Pizza Cereal Bowl</h3>
+				<h4 class="mt-1">12 minutes, 6 ingredients. Serves 3.</h4>
+			</section>
+			<section class="mt-6">
+				<h3 class="font-display text-xl font-bold">Frozen Hot Dog Milkshake Supreme</h3>
+				<h4 class="mt-1">60 minutes, 21 ingredients. Serves 10.</h4>
+			</section>
+		</article>
+	}
+}

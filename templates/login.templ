@@ -1,0 +1,38 @@
+package templates
+
+templ Login() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Login - Recipe App</title>
+			<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet"/>
+			<link href="/static/output.css" rel="stylesheet"/>
+		</head>
+		<body class="bg-stone-200">
+			<main class="flex justify-center items-center h-full w-full">
+				<div class="bg-stone-900 px-10 py-8 rounded-lg shadow-md w-1/3">
+					<h2 class="text-center text-4xl font-display font-extrabold text-white">
+						Sourdough.
+					</h2>
+					<div class="mt-8">
+						if params := ctx.Value("error"); params != nil {
+							<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+								Authentication failed. Please try again.
+							</div>
+						}
+						<div class="mt-4">
+							<a
+								href="/auth/google"
+								class="group relative w-full flex justify-center py-2 px-4 text-xl rounded-md font-display font-bold bg-stone-100 hover:shadow-md"
+							>
+								Sign in with Google
+							</a>
+						</div>
+					</div>
+				</div>
+			</main>
+		</body>
+	</html>
+}
