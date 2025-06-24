@@ -9,16 +9,15 @@ This is a Go-based recipe application using:
 - **SQLite** database with go-sqlite3 driver
 - **Templ** for server-side HTML templating
 - **HTMX** and **Alpine.js** for frontend interactivity (via CDN)
-- **OpenAI client** for LLM integration (configured for OpenRouter)
 
 ## Development Commands
 
 ```bash
-# Generate Templ templates
-templ generate
+# Generate Templ & Tailwind templates
+make generate
 
 # Run the application
-go run main.go
+make run
 
 # Run with custom database path
 DB_PATH=./custom.db go run main.go
@@ -57,10 +56,3 @@ go test ./...
 - **Frontend**: HTMX for dynamic interactions, Alpine.js for client-side reactivity
 - **No build steps**: Frontend uses CDN resources, no bundling required
 - **OpenRouter**: Ready for LLM integration via sashabaranov/go-openai client
-
-## Environment Variables
-
-- `DB_PATH`: Database file path (default: "./recipes.db")
-- `PORT`: Server port (default: "3000")
-- `OPENAI_API_KEY`: For OpenRouter integration
-- `OPENAI_BASE_URL`: Set to OpenRouter endpoint when using OpenRouter
