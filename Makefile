@@ -2,18 +2,19 @@
 
 # Using .PHONY declares these targets as not being actual files.
 # This is a good practice for targets that are commands.
-.PHONY: all run build test fmt templ.generate templ.watch tailwind.watch watch
+.PHONY: all run build generate test fmt templ.generate templ.watch tailwind.generate tailwind.watch watch
 
 # The default target executed when you just run `make`
 all: build
 
 # Run the application
-run:
+run: templ.generate tailwind.generate
 	go run main.go
 
-# Build the application binary
-build:
+build: templ.generate tailwind.generate
 	go build -o sourdough main.go
+
+generate: templ.generate tailwind.generate
 
 # Run the tests
 test:
@@ -23,15 +24,17 @@ test:
 fmt:
 	go fmt ./...
 
-# --- Templ Targets ---
+db.reset:
+	rm *.db
 
-# Generate HTML from templ files
 templ.generate:
 	templ generate
 
-# Watch for changes in .templ files and regenerate
 templ.watch:
 	templ generate --watch --proxy=http://localhost:3000 --cmd="go run ."
+
+tailwind.generate:
+	npx --yes tailwindcss -i ./static/input.css -o ./static/output.css
 
 tailwind.watch:
 	npx --yes tailwindcss -i ./static/input.css -o ./static/output.css --watch
