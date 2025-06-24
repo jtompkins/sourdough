@@ -28,13 +28,15 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Fatal("No port found. Set PORT environment variable.")
+		port = "3000"
+		log.Printf("No PORT environment variable found, defaulting to %s", port)
 	}
 
 	dbPath := os.Getenv("DB_PATH")
 
 	if dbPath == "" {
-		log.Fatal("No path to DB file found. Set DB_PATH environment variable.")
+		dbPath = "./recipes.db"
+		log.Printf("No DB_PATH environment variable found, defaulting to %s", dbPath)
 	}
 
 	db, err := database.New(dbPath)
@@ -105,7 +107,6 @@ func useProviders() {
 	googleClientID := os.Getenv("GOOGLE_CLIENT_ID")
 	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
 	baseURL := os.Getenv("BASE_URL")
-	port := os.Getenv("PORT")
 
 	if baseURL == "" {
 		log.Fatal("No base URL configured. Set BASE_URL environment variable.")
@@ -113,13 +114,11 @@ func useProviders() {
 
 	var providers []goth.Provider
 
-	authBaseUrl := baseURL + ":" + port
-
 	if googleClientID != "" && googleClientSecret != "" {
 		providers = append(providers, google.New(
 			googleClientID,
 			googleClientSecret,
-			authBaseUrl+"/auth/google/callback",
+			baseURL+"/auth/google/callback",
 		))
 	}
 
