@@ -107,8 +107,8 @@ func useProviders() {
 	baseURL := os.Getenv("BASE_URL")
 	port := os.Getenv("PORT")
 
-	if baseURL == "" || port == "" {
-		log.Fatal("No base URL or port configured. Set BASE_URL and PORT environment variables.")
+	if baseURL == "" {
+		log.Fatal("No base URL configured. Set BASE_URL environment variable.")
 	}
 
 	var providers []goth.Provider

@@ -12,7 +12,7 @@ run: templ.generate tailwind.generate
 	go run main.go
 
 build: templ.generate tailwind.generate
-	go build -o sourdough main.go
+	CGO_ENABLED=1 go build -a -ldflags '-linkmode external -extldflags "-static"' -o sourdough main.go
 
 generate: templ.generate tailwind.generate
 

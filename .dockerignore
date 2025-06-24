@@ -1,0 +1,7 @@
+.git
+.gitignore
+.env
+*.db
+*.db-journal
+README.md
+CLAUDE.md
