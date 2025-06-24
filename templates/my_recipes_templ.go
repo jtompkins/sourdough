@@ -8,7 +8,10 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "sourdough/internal/models"
+import (
+	"fmt"
+	"sourdough/internal/models"
+)
 
 func MyRecipes(recipes []*models.Recipe) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -43,69 +46,84 @@ func MyRecipes(recipes []*models.Recipe) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form class=\"flex flex-col mt-10 h-1/3 items-end\"><textarea name=\"recipe\" id=\"recipe\" class=\"w-full h-full p-4 bg-stone-100 shadow-lg shadow-stone-800/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-blue-500\" placeholder=\"Paste your recipe here\"></textarea> <input type=\"submit\" value=\"Add\" class=\"bg-stone-300 hover:bg-stone-400 w-36 font-display font-bold hover:text-white text-xl mt-4 px-4 py-1 rounded-lg transition cursor-pointer\"></form><article class=\"mt-15\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form action=\"/recipes\" method=\"POST\" class=\"flex flex-col mt-10 h-1/3 items-end\" hx-boost=\"false\"><textarea name=\"recipe\" id=\"recipe\" class=\"w-full h-full p-4 bg-stone-100 shadow-lg shadow-stone-800/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-blue-500\" rows=\"10\" placeholder=\"Paste your recipe here\"></textarea> <input type=\"submit\" value=\"Add\" class=\"bg-stone-300 hover:bg-stone-400 w-36 font-display font-bold hover:text-white text-xl mt-4 px-4 py-1 rounded-lg transition cursor-pointer\"></form><article class=\"mt-15\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, recipe := range recipes {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"card\"><section class=\"mt-6\"><h3 class=\"font-display text-xl font-bold\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"card\"><section class=\"mt-6\"><h3 class=\"font-display text-xl font-bold\"><a href=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Title)
+				var templ_7745c5c3_Var3 templ.SafeURL
+				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinURLErrs(fmt.Sprintf("/recipes/%d", recipe.ID))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 20, Col: 63}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 24, Col: 96}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</h3><h4 class=\"mt-1\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.CookTime)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 21, Col: 40}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 24, Col: 113}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, ", ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</a></h3><h4 class=\"mt-1\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.NumberOfIngredients)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 21, Col: 72}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " ingredients. Serves ")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
+				if recipe.CookTime != "" {
+					var templ_7745c5c3_Var5 string
+					templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.CookTime)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 27, Col: 25}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, ", ")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
 				}
 				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Servings)
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.NumberOfIngredients)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 21, Col: 112}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 29, Col: 35}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, ".</h4></section></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " ingredients. Serves ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var7 string
+				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Servings)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 29, Col: 75}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, ".</h4></section></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<section class=\"mt-6\"><h3 class=\"font-display text-xl font-bold\">Chocolate-Covered Pickle Ice Cream with Mustard Sprinkles</h3><h4 class=\"mt-1\">15 minutes, 3 ingredients. Serves 1.</h4></section><section class=\"mt-6\"><h3 class=\"font-display text-xl font-bold\">Reverse Spaghetti Pancakes in Jellybean Sauce</h3><h4 class=\"mt-1\">25 minutes, 12 ingredients. Serves 4.</h4></section><section class=\"mt-6\"><h3 class=\"font-display text-xl font-bold\">Upside-Down Tuna Smoothie Casserole</h3><h4 class=\"mt-1\">8 minutes, 2 ingredients. Serves 2.</h4></section><section class=\"mt-6\"><h3 class=\"font-display text-xl font-bold\">Crunchy Water Soup with Invisible Croutons</h3><h4 class=\"mt-1\">29 minutes, 1 ingredients. Serves 5.</h4></section><section class=\"mt-6\"><h3 class=\"font-display text-xl font-bold\">Backwards Pizza Cereal Bowl</h3><h4 class=\"mt-1\">12 minutes, 6 ingredients. Serves 3.</h4></section><section class=\"mt-6\"><h3 class=\"font-display text-xl font-bold\">Frozen Hot Dog Milkshake Supreme</h3><h4 class=\"mt-1\">60 minutes, 21 ingredients. Serves 10.</h4></section></article>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</article>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

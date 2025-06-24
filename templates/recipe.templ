@@ -8,13 +8,21 @@ templ Recipe(recipe *models.Recipe) {
 			<header id="recipe-header" class="flex flex-col">
 				<h2 class="font-display text-3xl font-bold print:text-2xl">{ recipe.Title }</h2>
 				<div class="flex flex-row mt-4">
+					if recipe.PrepTime != "" {
+						<section class="flex flex-col mr-30">
+							<h3 class="font-bold">Prep time</h3>
+							<span>{ recipe.PrepTime }</span>
+						</section>
+					}
+					if recipe.CookTime != "" {
+						<section class="flex flex-col mr-30">
+							<h3 class="font-bold">Cook time</h3>
+							<span>{ recipe.CookTime }</span>
+						</section>
+					}
 					<section class="flex flex-col mr-30">
-						<h3 class="font-bold">Prep time</h3>
-						<span>{ recipe.PrepTime }</span>
-					</section>
-					<section class="flex flex-col mr-30">
-						<h3 class="font-bold">Cook time</h3>
-						<span>{ recipe.CookTime }</span>
+						<h3 class="font-bold">Number of Ingredients</h3>
+						<span>{ recipe.NumberOfIngredients }</span>
 					</section>
 					<section class="flex flex-col">
 						<h3 class="font-bold">Servings</h3>

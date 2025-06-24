@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"sourdough/internal/database"
 	"sourdough/internal/models"
@@ -44,8 +45,18 @@ func (repo *RecipesRepository) GetForUser(userID int) ([]*models.Recipe, error) 
 }
 
 func (repo *RecipesRepository) Create(userID int, recipe *models.LLMRecipe) (*models.Recipe, error) {
+	ingredientsJson, err := json.Marshal(recipe.Ingredients)
+	if err != nil {
+		return nil, err
+	}
+
+	directionsJson, err := json.Marshal(recipe.Directions)
+	if err != nil {
+		return nil, err
+	}
+
 	result, err := repo.db.Exec("INSERT INTO recipes (user_id, title, ingredients, number_of_ingredients, directions, prep_time, cook_time, servings) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-		userID, recipe.Title, recipe.Ingredients, len(recipe.Ingredients), recipe.Directions, recipe.PrepTime, recipe.CookTime, recipe.Servings)
+		userID, recipe.Title, ingredientsJson, len(recipe.Ingredients), directionsJson, recipe.PrepTime, recipe.CookTime, recipe.Servings)
 
 	if err != nil {
 		return nil, err

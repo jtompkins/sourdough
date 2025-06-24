@@ -9,6 +9,7 @@ import (
 	"sourdough/internal/models"
 	"sourdough/internal/repositories"
 	"sourdough/templates"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/revrost/go-openrouter"
@@ -16,7 +17,24 @@ import (
 )
 
 const LLM_SYSTEM_PROMPT = `
-
+	You are a helpful model that specializes in formatting recipe text into a structured output.
+	When you are given text input, if it looks like a recipe, you will do the following steps:
+		1. Clean up the formatting of individual ingredients, normalizing the measurements to American standards
+		2. Simplify individual steps in the instructions where it makes sense, but DO NOT remove or skip steps
+		3. If you cannot determine a value for any of fields, output an empty string ("") for the value, DO NOT substitute any other value or skip the field
+		4. Return your modified version of the recipe in JSON format, adhering to the following schema:
+			{
+				"title": "string",
+				"prepTime": "string", # in hours and minutes
+				"cookTime": "string", # in hours and minutes
+				"servings": "number",
+				"ingredients": [
+					"string"
+				],
+				"instructions": [
+					"string"
+				]
+			}
 `
 
 type RecipesHandler struct {
@@ -43,37 +61,27 @@ func NewRecipesHandler(recipesRepo *repositories.RecipesRepository, openRouterCl
 }
 
 func (h *RecipesHandler) GetRecipe(c *fiber.Ctx) error {
-	var sampleRecipe = models.Recipe{
-		Title:    "Chocolate-Covered Pickle Ice Cream with Mustard Sprinkles",
-		PrepTime: "47 minutes",
-		CookTime: "15 minutes",
-		Ingredients: []string{
-			"2 cups vanilla ice cream, melted and confused",
-			"1½ cups dill pickle juice, chilled",
-			"12 large pickles, diced into perfect cubes",
-			"8 oz dark chocolate, melted backwards",
-			"½ cup yellow mustard, frozen into tiny pearls",
-			"3 tablespoons pickle brine reduction",
-			"1 teaspoon vanilla extract (the sad kind)",
-			"¼ cup crushed pretzel confusion",
-			"2 drops green food coloring (optional, for extra pickle vibes)",
-		},
-		Directions: []string{
-			"Gently whisper to the melted ice cream until it remembers how to be cold again (approximately 15 minutes).",
-			"Stir in pickle juice using only counterclockwise motions while humming your favorite pickle song.",
-			"Fold in the diced pickles as if you're tucking them into bed for a long winter's nap.",
-			"Drizzle the backwards-melted chocolate in zigzag patterns that spell out \"why\" in cursive.",
-			"Freeze the mixture while standing on one foot and thinking about regrets (20 minutes).",
-			"Using a melon baller, scoop into serving bowls and sprinkle with frozen mustard pearls.",
-			"Garnish with crushed pretzel confusion and serve immediately to unsuspecting guests.",
-			"Document their facial expressions for science.",
-		},
-		NumberOfIngredients: 9,
-		Servings:            6,
+	idParam := c.Params("id")
+
+	if idParam == "" {
+		return c.Status(400).SendString("Missing recipe ID")
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return c.Status(400).SendString("Invalid recipe ID")
+	}
+
+	recipe, err := h.recipesRepo.Get(id)
+
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	} else if recipe == nil {
+		return c.Status(404).SendString("Recipe not found")
 	}
 
 	c.Set("Content-Type", "text/html")
-	component := templates.Recipe(&sampleRecipe)
+	component := templates.Recipe(recipe)
 	return component.Render(c.Context(), c.Response().BodyWriter())
 }
 

@@ -88,7 +88,7 @@ func main() {
 
 	app.Get("/", authHandler.RequireAuth, recipesHandler.GetAllRecipes)
 	app.Get("/recipes/:id", recipesHandler.GetRecipe)
-	app.Post("/recipes", recipesHandler.PostRecipe)
+	app.Post("/recipes", authHandler.RequireAuth, recipesHandler.PostRecipe)
 
 	app.Get("/login", authHandler.LoginPage)
 	app.Get("/auth/:provider", authHandler.Login)
