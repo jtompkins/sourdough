@@ -81,9 +81,9 @@ func main() {
 		log.Fatal("No OpenRouter LLM configuration found. Set OPENROUTER_MODEL, OPENROUTER_API_KEY, and OPENROUTER_APP_NAME environment variables.")
 	}
 
-	client := openrouter.NewClient(apiKey, openrouter.WithXTitle(appName))
+	openRouterClient := openrouter.NewClient(apiKey, openrouter.WithXTitle(appName))
 
-	recipesHandler := handlers.NewRecipesHandler(recipiesRepo, client, model)
+	recipesHandler := handlers.NewRecipesHandler(recipiesRepo, openRouterClient, model)
 	authHandler := handlers.NewAuthHandler(userRepo, sessionStore)
 
 	app.Get("/", authHandler.RequireAuth, recipesHandler.GetAllRecipes)
