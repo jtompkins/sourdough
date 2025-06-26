@@ -1,14 +1,18 @@
 package main
 
 import (
+	"embed"
 	"fmt"
+	"io/fs"
 	"log"
+	"net/http"
 	"sourdough/internal/database"
 	"sourdough/internal/handlers"
 	"sourdough/internal/repositories"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/session"
@@ -19,6 +23,10 @@ import (
 	"github.com/shareed2k/goth_fiber"
 	"github.com/spf13/viper"
 )
+
+//go:embed static
+var embededStatic embed.FS
+
 
 func main() {
 	viper.SetConfigFile(".env")
@@ -93,7 +101,18 @@ func main() {
 	app.Get("/auth/:provider/callback", authHandler.Callback)
 	app.Get("/logout", authHandler.Logout)
 
-	app.Static("/static", "./static")
+	if viper.GetBool("DEV_MODE") {
+		app.Static("/static", "./static")
+	} else {
+		staticFS, err := fs.Sub(embededStatic, "static")
+		if err != nil {
+			log.Fatal(err)
+		}
+		app.Use("/static", filesystem.New(filesystem.Config{
+			Root: http.FS(staticFS),
+			Browse: true,
+		}))
+	}
 
 	port := viper.GetString("PORT")
 
