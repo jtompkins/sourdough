@@ -7,30 +7,28 @@ import (
 
 templ MyRecipes(recipes []*models.Recipe) {
 	@Layout("My Recipes") {
-		<form action="/recipes" method="POST" class="recipe-form" hx-boost="false">
-			<textarea
-				name="recipe"
-				id="recipe"
-				class="recipe-textarea"
-				rows="10"
-				placeholder="Paste your recipe here"
-			></textarea>
-			<input type="submit" value="Add" class="add-recipe-button"/>
-		</form>
-		<article class="recipes-list">
+		<main class="my-recipes">
+			<form action="/recipes" method="POST" hx-boost="false">
+				<textarea
+					name="recipe"
+					id="recipe"
+					class="recipe-textarea"
+					rows="10"
+					placeholder="Paste your recipe here"
+				></textarea>
+				<input class="button" type="submit" value="Add"/>
+			</form>
 			for _, recipe := range recipes {
-				<div class="card">
-					<section class="mt-6">
-						<h3 class="recipe-title"><a href={ fmt.Sprintf("/recipes/%d", recipe.ID) }>{ recipe.Title }</a></h3>
-						<h4 class="mt-1">
-							if recipe.CookTime != "" {
-								{ recipe.CookTime },
-							}
-							{ recipe.NumberOfIngredients } ingredients. Serves { recipe.Servings }.
-						</h4>
-					</section>
-				</div>
+				<section>
+					<h2><a href={ fmt.Sprintf("/recipes/%d", recipe.ID) }>{ recipe.Title }</a></h2>
+					<span>
+						if recipe.CookTime != "" {
+							{ recipe.CookTime },
+						}
+						{ recipe.NumberOfIngredients } ingredients. Serves { recipe.Servings }.
+					</span>
+				</section>
 			}
-		</article>
+		</main>
 	}
 }

@@ -1,0 +1,266 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap");
+
+:root {
+    --font-display: "Fraunces", serif;
+    --color-red-100: oklch(93.6% 0.032 17.717);
+    --color-red-400: oklch(70.4% 0.191 22.216);
+    --color-red-700: oklch(50.5% 0.213 27.518);
+    --color-blue-500: oklch(62.3% 0.214 259.815);
+    --color-stone-100: oklch(97% 0.001 106.424);
+    --color-stone-200: oklch(92.3% 0.003 48.717);
+    --color-stone-300: oklch(86.9% 0.005 56.366);
+    --color-stone-400: oklch(70.9% 0.01 56.259);
+    --color-stone-900: oklch(21.6% 0.006 56.043);
+    --color-white: #fff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+
+    background-color: var(--color-stone-200);
+
+    color: var(--color-stone-900);
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-stone-900);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-display);
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0.5rem;
+    transition: all 0.15s ease-in-out;
+    padding: 0.5rem 2rem;
+
+    font-family: var(--font-display);
+    font-weight: 700;
+
+    border: 0;
+    background-color: var(--color-stone-300);
+
+    &:hover {
+        background-color: var(--color-stone-400);
+        color: var(--color-white);
+    }
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+
+    width: 75%;
+    padding-top: 10rem;
+    margin-left: 12.5%;
+
+    @media (max-width: 768px) {
+        width: 90%;
+
+        padding-top: 2rem;
+        margin-left: 5%;
+    }
+
+    @media print {
+        width: 100%;
+        margin-left: 0;
+        padding-top: 0;
+    }
+}
+
+h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+
+    @media (max-width: 768px) {
+        font-size: 2rem;
+    }
+}
+
+#sourdough-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .button {
+        background-color: transparent;
+
+        &:hover {
+            background-color: var(--color-stone-400);
+        }
+
+        @media print {
+            display: none;
+        }
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    .button {
+        font-size: 1.25rem;
+        margin-top: 1rem;
+        width: 9rem;
+    }
+}
+
+textarea {
+    width: 100%;
+    padding: 1rem;
+
+    background-color: var(--color-stone-100);
+
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    border: 0;
+    border-radius: 0.5rem;
+
+    resize: none;
+
+    &:focus {
+        outline: 2px solid var(--color-stone-900);
+    }
+}
+
+main {
+    margin-top: 3.75rem;
+
+    @media (max-width: 768px) {
+        margin-top: 1.5rem;
+    }
+}
+
+.my-recipes {
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+
+        margin-bottom: 0.25rem;
+    }
+
+    section {
+        margin-bottom: 1.5rem;
+
+        &:first-of-type {
+            margin-top: 2.5rem;
+        }
+    }
+}
+
+.recipe {
+    h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    header {
+        display: flex;
+        flex-direction: column;
+
+        .recipe-info {
+            display: flex;
+            flex-direction: row;
+            margin-top: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            margin-right: 7.5rem;
+
+            h3 {
+                font-weight: 700;
+            }
+        }
+    }
+
+    article {
+        display: flex;
+        flex-direction: row;
+        margin-top: 3rem;
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+        }
+
+        #ingredients {
+            width: 33%;
+            margin-right: 5rem;
+
+            ul {
+                padding-left: 1.25rem;
+            }
+
+            @media (max-width: 768px) {
+                width: 100%;
+            }
+
+            @media print {
+                width: 25%;
+                margin-right: 2.5rem;
+            }
+        }
+
+        #directions {
+            width: 66%;
+
+            ol {
+                padding-left: 1.25rem;
+            }
+
+            @media (max-width: 768px) {
+                width: 100%;
+
+                margin-top: 1.5rem;
+            }
+
+            @media print {
+                width: 75%;
+
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            margin-top: 1.5rem;
+
+            flex-direction: column;
+        }
+
+        @media print {
+            flex-direction: row;
+        }
+    }
+}
