@@ -29,17 +29,17 @@ func Login() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sourdough</title><link href=\"https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap\" rel=\"stylesheet\"><link href=\"/static/output.css\" rel=\"stylesheet\"></head><body class=\"bg-stone-200\"><main class=\"flex justify-center items-center h-full w-full\"><div class=\"bg-stone-900 px-10 py-8 rounded-lg shadow-md w-1/3\"><h2 class=\"text-center text-4xl font-display font-extrabold text-white\">Sourdough.</h2><div class=\"mt-8\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sourdough</title><link href=\"https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap\" rel=\"stylesheet\"><link href=\"/static/output.css\" rel=\"stylesheet\"></head><body class=\"bg-stone-200\"><main class=\"login-container\"><div class=\"login-form\"><h2 class=\"login-title\">Sourdough.</h2><div class=\"mt-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if params := ctx.Value("error"); params != nil {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4\">Authentication failed. Please try again.</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"error-message\">Authentication failed. Please try again.</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"mt-4\"><a href=\"/auth/google\" class=\"group relative w-full flex justify-center py-2 px-4 text-xl rounded-md font-display font-bold bg-stone-100 hover:shadow-md\">Sign in with Google</a></div></div></div></main></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"mt-4\"><a href=\"/auth/google\" class=\"google-signin-button\">Sign in with Google</a></div></div></div></main></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

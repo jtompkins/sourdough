@@ -46,19 +46,19 @@ func MyRecipes(recipes []*models.Recipe) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form action=\"/recipes\" method=\"POST\" class=\"flex flex-col mt-10 h-1/3 items-end\" hx-boost=\"false\"><textarea name=\"recipe\" id=\"recipe\" class=\"w-full h-full p-4 bg-stone-100 shadow-lg shadow-stone-800/10 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-blue-500\" rows=\"10\" placeholder=\"Paste your recipe here\"></textarea> <input type=\"submit\" value=\"Add\" class=\"bg-stone-300 hover:bg-stone-400 w-36 font-display font-bold hover:text-white text-xl mt-4 px-4 py-1 rounded-lg transition cursor-pointer\"></form><article class=\"mt-15\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form action=\"/recipes\" method=\"POST\" class=\"recipe-form\" hx-boost=\"false\"><textarea name=\"recipe\" id=\"recipe\" class=\"recipe-textarea\" rows=\"10\" placeholder=\"Paste your recipe here\"></textarea> <input type=\"submit\" value=\"Add\" class=\"add-recipe-button\"></form><article class=\"recipes-list\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, recipe := range recipes {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"card\"><section class=\"mt-6\"><h3 class=\"font-display text-xl font-bold\"><a href=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"card\"><section class=\"mt-6\"><h3 class=\"recipe-title\"><a href=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var3 templ.SafeURL
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinURLErrs(fmt.Sprintf("/recipes/%d", recipe.ID))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 24, Col: 96}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 24, Col: 78}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -71,7 +71,7 @@ func MyRecipes(recipes []*models.Recipe) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 24, Col: 113}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/my_recipes.templ`, Line: 24, Col: 95}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {

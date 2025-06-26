@@ -1,8 +1,8 @@
 # Stage 1: Build
 FROM golang:1.24-alpine AS builder
 
-# Install build dependencies: git, nodejs, npm
-RUN apk add --no-cache build-base git nodejs npm
+# Install build dependencies: git
+RUN apk add --no-cache build-base git
 
 WORKDIR /app
 
@@ -13,20 +13,14 @@ RUN go mod download
 # Install templ for code generation
 RUN go install github.com/a-h/templ/cmd/templ@latest
 
-# Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
-# Install npm dependencies (for tailwind)
-RUN npm ci
-
 # Copy Makefile so we can run make commands
 COPY Makefile ./
 
 # Copy the rest of the application source code
 COPY . .
 
-# Generate templ files and tailwind css, then build the Go binary
-RUN make generate
-RUN GOOS=linux make build
+# Generate templ files and build the Go binary
+RUN make docker-build
 
 # Stage 2: Final
 FROM gcr.io/distroless/static-debian11

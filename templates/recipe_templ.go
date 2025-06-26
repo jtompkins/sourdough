@@ -43,25 +43,25 @@ func Recipe(recipe *models.Recipe) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<article class=\"mt-10 print:mt-5\"><header id=\"recipe-header\" class=\"flex flex-col\"><h2 class=\"font-display text-3xl font-bold print:text-2xl\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<article class=\"recipe-article\"><header id=\"recipe-header\" class=\"recipe-header\"><h2 class=\"recipe-title\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/recipe.templ`, Line: 9, Col: 77}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/recipe.templ`, Line: 9, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</h2><div class=\"flex flex-row mt-4\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</h2><div class=\"recipe-meta-container\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if recipe.PrepTime != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<section class=\"flex flex-col mr-30\"><h3 class=\"font-bold\">Prep time</h3><span>")
+			if recipe.PrepTime != "" || recipe.PrepTime == "N/A" {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<section class=\"recipe-meta-item\"><h3 class=\"recipe-meta-item-title\">Prep time</h3><span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -79,8 +79,8 @@ func Recipe(recipe *models.Recipe) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			if recipe.CookTime != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<section class=\"flex flex-col mr-30\"><h3 class=\"font-bold\">Cook time</h3><span>")
+			if recipe.CookTime != "" || recipe.CookTime == "N/A" {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<section class=\"recipe-meta-item\"><h3 class=\"recipe-meta-item-title\">Cook time</h3><span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -98,7 +98,7 @@ func Recipe(recipe *models.Recipe) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<section class=\"flex flex-col mr-30\"><h3 class=\"font-bold\">Number of Ingredients</h3><span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<section class=\"recipe-meta-item\"><h3 class=\"recipe-meta-item-title\">Number of Ingredients</h3><span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -111,7 +111,7 @@ func Recipe(recipe *models.Recipe) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span></section><section class=\"flex flex-col\"><h3 class=\"font-bold\">Servings</h3><span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span></section><section class=\"recipe-meta-item\"><h3 class=\"recipe-meta-item-title\">Servings</h3><span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -124,19 +124,19 @@ func Recipe(recipe *models.Recipe) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</span></section></div></header><div class=\"flex flex-row mt-10 print:mt-5\"><section id=\"ingredients\" class=\"w-1/3 mr-20 print:mr-5 print:text-sm\"><h2 class=\"font-display text-xl print:text-lg font-bold mb-4\">Ingredients</h2><ul class=\"list-disc pl-5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</span></section></div></header><div class=\"recipe-content-container\"><section id=\"ingredients\" class=\"ingredients-section\"><h2 class=\"section-title\">Ingredients</h2><ul class=\"ingredients-list\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, ingredient := range recipe.Ingredients {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<li class=\"mb-3 print:mb-1\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<li class=\"list-item\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(ingredient)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/recipe.templ`, Line: 38, Col: 47}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/recipe.templ`, Line: 38, Col: 41}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -147,19 +147,19 @@ func Recipe(recipe *models.Recipe) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</ul></section><section id=\"directions\" class=\"w-2/3 print:text-sm\"><h2 class=\"font-display text-xl print:text-lg font-bold mb-4\">Directions</h2><ol class=\"list-decimal pl-5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</ul></section><section id=\"directions\" class=\"directions-section\"><h2 class=\"section-title\">Directions</h2><ol class=\"directions-list\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, step := range recipe.Directions {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<li class=\"mb-3 print:mb-1\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<li class=\"list-item\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(step)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/recipe.templ`, Line: 46, Col: 41}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/recipe.templ`, Line: 46, Col: 35}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {

@@ -33,7 +33,6 @@ func main() {
 	}
 
 	dbPath := os.Getenv("DB_PATH")
-
 	if dbPath == "" {
 		dbPath = "./recipes.db"
 		log.Printf("No DB_PATH environment variable found, defaulting to %s", dbPath)
