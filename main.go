@@ -27,7 +27,6 @@ import (
 //go:embed static
 var embededStatic embed.FS
 
-
 func main() {
 	viper.SetConfigFile(".env")
 	viper.ReadInConfig()
@@ -93,7 +92,7 @@ func main() {
 	authHandler := handlers.NewAuthHandler(userRepo, sessionStore)
 
 	app.Get("/", authHandler.RequireAuth, recipesHandler.GetAllRecipes)
-	app.Get("/recipes/:id", recipesHandler.GetRecipe)
+	app.Get("/recipes/:id", authHandler.RequireAuth, recipesHandler.GetRecipe)
 	app.Post("/recipes", authHandler.RequireAuth, recipesHandler.PostRecipe)
 
 	app.Get("/login", authHandler.LoginPage)
@@ -109,7 +108,7 @@ func main() {
 			log.Fatal(err)
 		}
 		app.Use("/static", filesystem.New(filesystem.Config{
-			Root: http.FS(staticFS),
+			Root:   http.FS(staticFS),
 			Browse: true,
 		}))
 	}

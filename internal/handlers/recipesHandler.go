@@ -61,6 +61,11 @@ func NewRecipesHandler(recipesRepo *repositories.RecipesRepository, openRouterCl
 }
 
 func (h *RecipesHandler) GetRecipe(c *fiber.Ctx) error {
+	user, err := h.getCurrentUserFromSession(c)
+	if err != nil {
+		return err
+	}
+
 	idParam := c.Params("id")
 
 	if idParam == "" {
@@ -80,6 +85,10 @@ func (h *RecipesHandler) GetRecipe(c *fiber.Ctx) error {
 		return c.Status(404).SendString("Recipe not found")
 	}
 
+	if user.Id != recipe.UserID {
+		return c.Status(403).SendString("Forbidden")
+	}
+
 	c.Set("Content-Type", "text/html")
 	component := templates.Recipe(recipe)
 	return component.Render(c.Context(), c.Response().BodyWriter())
@@ -88,12 +97,6 @@ func (h *RecipesHandler) GetRecipe(c *fiber.Ctx) error {
 func (h *RecipesHandler) GetAllRecipes(c *fiber.Ctx) error {
 	user, err := h.getCurrentUserFromSession(c)
 	if err != nil {
-		if errors.Is(err, ErrUnauthorized) {
-			return c.Status(401).Redirect("/login")
-		} else if errors.Is(err, ErrUserNotFound) {
-			return c.Status(404).SendString("User not found")
-		}
-
 		return err
 	}
 
