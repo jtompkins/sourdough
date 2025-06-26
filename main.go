@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"log"
-	"os"
 	"sourdough/internal/database"
 	"sourdough/internal/handlers"
 	"sourdough/internal/repositories"
@@ -13,30 +13,27 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/storage/sqlite3/v2"
-	"github.com/joho/godotenv"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/providers/google"
 	"github.com/revrost/go-openrouter"
 	"github.com/shareed2k/goth_fiber"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("No .env file found, using environment variables")
+	viper.SetConfigFile(".env")
+	viper.ReadInConfig()
+	viper.AutomaticEnv()
+
+	viper.SetDefault("DEV_MODE", false)
+
+	if viper.GetBool("DEV_MODE") {
+		viper.SetDefault("PORT", "3000")
 	}
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
-		log.Printf("No PORT environment variable found, defaulting to %s", port)
-	}
+	viper.SetDefault("DB_PATH", "./recipes.db")
 
-	dbPath := os.Getenv("DB_PATH")
-	if dbPath == "" {
-		dbPath = "./recipes.db"
-		log.Printf("No DB_PATH environment variable found, defaulting to %s", dbPath)
-	}
+	dbPath := viper.GetString("DB_PATH")
 
 	db, err := database.New(dbPath)
 	if err != nil {
@@ -74,9 +71,9 @@ func main() {
 	userRepo := repositories.NewUserRepository(db)
 	recipiesRepo := repositories.NewRecipesRepository(db)
 
-	model := os.Getenv("OPENROUTER_MODEL")
-	apiKey := os.Getenv("OPENROUTER_API_KEY")
-	appName := os.Getenv("OPENROUTER_APP_NAME")
+	model := viper.GetString("OPENROUTER_MODEL")
+	apiKey := viper.GetString("OPENROUTER_API_KEY")
+	appName := viper.GetString("OPENROUTER_APP_NAME")
 
 	if model == "" || apiKey == "" || appName == "" {
 		log.Fatal("No OpenRouter LLM configuration found. Set OPENROUTER_MODEL, OPENROUTER_API_KEY, and OPENROUTER_APP_NAME environment variables.")
@@ -98,17 +95,23 @@ func main() {
 
 	app.Static("/static", "./static")
 
+	port := viper.GetString("PORT")
+
 	log.Printf("Server starting on port %s", port)
 	log.Fatal(app.Listen(":" + port))
 }
 
 func useProviders() {
-	googleClientID := os.Getenv("GOOGLE_CLIENT_ID")
-	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
-	baseURL := os.Getenv("BASE_URL")
+	googleClientID := viper.GetString("GOOGLE_CLIENT_ID")
+	googleClientSecret := viper.GetString("GOOGLE_CLIENT_SECRET")
+	baseURL := viper.GetString("BASE_URL")
 
 	if baseURL == "" {
 		log.Fatal("No base URL configured. Set BASE_URL environment variable.")
+	}
+
+	if viper.GetBool("DEV_MODE") {
+		baseURL = fmt.Sprintf("%s:%s", baseURL, viper.GetString("PORT"))
 	}
 
 	var providers []goth.Provider
