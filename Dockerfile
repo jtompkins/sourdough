@@ -20,7 +20,7 @@ COPY Makefile ./
 COPY . .
 
 # Generate templ files and build the Go binary
-RUN make docker-build
+RUN make build.docker
 
 # Stage 2: Final
 FROM gcr.io/distroless/static-debian11
@@ -29,9 +29,6 @@ WORKDIR /app
 
 # Copy the compiled binary from the builder stage
 COPY --from=builder /app/sourdough .
-
-# Copy static assets and templates
-
 
 # Expose the port the app runs on
 EXPOSE 8080

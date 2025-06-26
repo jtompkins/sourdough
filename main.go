@@ -32,12 +32,8 @@ func main() {
 	viper.ReadInConfig()
 	viper.AutomaticEnv()
 
+	viper.SetDefault("PORT", "8080") // Default port for production
 	viper.SetDefault("DEV_MODE", false)
-
-	if viper.GetBool("DEV_MODE") {
-		viper.SetDefault("PORT", "3000")
-	}
-
 	viper.SetDefault("DB_PATH", "./recipes.db")
 
 	dbPath := viper.GetString("DB_PATH")
