@@ -5,19 +5,18 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"sourdough/internal/models"
 	"sourdough/internal/repositories"
 	"sourdough/templates"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/revrost/go-openrouter"
-	"github.com/revrost/go-openrouter/jsonschema"
+	openai "github.com/sashabaranov/go-openai"
+	"github.com/sashabaranov/go-openai/jsonschema"
 )
 
 const LLM_SYSTEM_PROMPT = `
-	You are a helpful model that specializes in formatting recipe text into a structured output.
+	You are a helpful model that specializes in formatting recipe text into a structured JSON output.
 	When you are given text input, if it looks like a recipe, you will do the following steps:
 		1. Clean up the formatting of individual ingredients, normalizing the measurements to American standards
 		2. Simplify individual steps in the instructions where it makes sense, but DO NOT remove or skip steps
@@ -38,25 +37,16 @@ const LLM_SYSTEM_PROMPT = `
 `
 
 type RecipesHandler struct {
-	recipesRepo      *repositories.RecipesRepository
-	openRouterClient *openrouter.Client
-	llmModel         string
-	responseSchema   *jsonschema.Definition
+	recipesRepo  *repositories.RecipesRepository
+	openAIClient *openai.Client
+	llmModel     string
 }
 
-func NewRecipesHandler(recipesRepo *repositories.RecipesRepository, openRouterClient *openrouter.Client, llmModel string) *RecipesHandler {
-	var schemaType models.LLMRecipe
-	responseSchema, err := jsonschema.GenerateSchemaForType(schemaType)
-
-	if err != nil {
-		log.Fatalf("GenerateSchemaForType error: %v", err)
-	}
-
+func NewRecipesHandler(recipesRepo *repositories.RecipesRepository, openAIClient *openai.Client, llmModel string) *RecipesHandler {
 	return &RecipesHandler{
-		recipesRepo:      recipesRepo,
-		openRouterClient: openRouterClient,
-		llmModel:         llmModel,
-		responseSchema:   responseSchema,
+		recipesRepo:  recipesRepo,
+		openAIClient: openAIClient,
+		llmModel:     llmModel,
 	}
 }
 
@@ -150,29 +140,36 @@ func (h *RecipesHandler) getCurrentUserFromSession(c *fiber.Ctx) (*models.User, 
 }
 
 func (h *RecipesHandler) formatWithLLM(recipe string) (models.LLMRecipe, error) {
-	req := openrouter.ChatCompletionRequest{
+	var llmRecipe models.LLMRecipe
+
+	schema, err := jsonschema.GenerateSchemaForType(llmRecipe)
+	if err != nil {
+		return models.LLMRecipe{}, err
+	}
+
+	req := openai.ChatCompletionRequest{
 		Model: h.llmModel,
-		Messages: []openrouter.ChatCompletionMessage{
+		Messages: []openai.ChatCompletionMessage{
 			{
-				Role:    openrouter.ChatMessageRoleSystem,
-				Content: openrouter.Content{Text: LLM_SYSTEM_PROMPT},
+				Role:    openai.ChatMessageRoleSystem,
+				Content: LLM_SYSTEM_PROMPT,
 			},
 			{
-				Role:    openrouter.ChatMessageRoleUser,
-				Content: openrouter.Content{Text: recipe},
+				Role:    openai.ChatMessageRoleUser,
+				Content: recipe,
 			},
 		},
-		ResponseFormat: &openrouter.ChatCompletionResponseFormat{
-			Type: openrouter.ChatCompletionResponseFormatTypeJSONSchema,
-			JSONSchema: &openrouter.ChatCompletionResponseFormatJSONSchema{
+		ResponseFormat: &openai.ChatCompletionResponseFormat{
+			Type: openai.ChatCompletionResponseFormatTypeJSONSchema,
+			JSONSchema: &openai.ChatCompletionResponseFormatJSONSchema{
 				Name:   "recipe",
-				Schema: h.responseSchema,
+				Schema: schema,
 				Strict: true,
 			},
 		},
 	}
 
-	resp, err := h.openRouterClient.CreateChatCompletion(
+	resp, err := h.openAIClient.CreateChatCompletion(
 		context.Background(),
 		req,
 	)
@@ -181,9 +178,7 @@ func (h *RecipesHandler) formatWithLLM(recipe string) (models.LLMRecipe, error) 
 		return models.LLMRecipe{}, err
 	}
 
-	var llmRecipe models.LLMRecipe
-
-	err = json.Unmarshal([]byte(resp.Choices[0].Message.Content.Text), &llmRecipe)
+	err = json.Unmarshal([]byte(resp.Choices[0].Message.Content), &llmRecipe)
 
 	if err != nil {
 		return models.LLMRecipe{}, err

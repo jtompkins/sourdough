@@ -19,7 +19,7 @@ import (
 	"github.com/gofiber/storage/sqlite3/v2"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/providers/google"
-	"github.com/revrost/go-openrouter"
+	openai "github.com/sashabaranov/go-openai"
 	"github.com/shareed2k/goth_fiber"
 	"github.com/spf13/viper"
 )
@@ -35,6 +35,7 @@ func main() {
 	viper.SetDefault("PORT", "8080") // Default port for production
 	viper.SetDefault("DEV_MODE", false)
 	viper.SetDefault("DB_PATH", "./recipes.db")
+	viper.SetDefault("LLM_PROVIDER_BASE_URL", "https://openrouter.ai/api/v1")
 
 	dbPath := viper.GetString("DB_PATH")
 
@@ -74,17 +75,19 @@ func main() {
 	userRepo := repositories.NewUserRepository(db)
 	recipiesRepo := repositories.NewRecipesRepository(db)
 
-	model := viper.GetString("OPENROUTER_MODEL")
-	apiKey := viper.GetString("OPENROUTER_API_KEY")
-	appName := viper.GetString("OPENROUTER_APP_NAME")
+	model := viper.GetString("LLM_PROVIDER_MODEL")
+	apiKey := viper.GetString("LLM_PROVIDER_API_KEY")
+	apiURL := viper.GetString("LLM_PROVIDER_BASE_URL")
 
-	if model == "" || apiKey == "" || appName == "" {
-		log.Fatal("No OpenRouter LLM configuration found. Set OPENROUTER_MODEL, OPENROUTER_API_KEY, and OPENROUTER_APP_NAME environment variables.")
+	if model == "" || apiKey == "" || apiURL == "" {
+		log.Fatal("No LLM configuration found. Set LLM_PROVIDER_MODEL, LLM_PROVIDER_API_KEY, and LLM_PROVIDER_BASE_URL environment variables.")
 	}
 
-	openRouterClient := openrouter.NewClient(apiKey, openrouter.WithXTitle(appName))
+	config := openai.DefaultConfig(apiKey)
+	config.BaseURL = apiURL
+	openAIClient := openai.NewClientWithConfig(config)
 
-	recipesHandler := handlers.NewRecipesHandler(recipiesRepo, openRouterClient, model)
+	recipesHandler := handlers.NewRecipesHandler(recipiesRepo, openAIClient, model)
 	authHandler := handlers.NewAuthHandler(userRepo, sessionStore)
 
 	app.Get("/", authHandler.RequireAuth, recipesHandler.GetAllRecipes)
