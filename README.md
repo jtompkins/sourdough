@@ -8,7 +8,7 @@ A Go-based recipe management application built with Fiber, SQLite, and server-si
 - **SQLite Database**: Lightweight, embedded database
 - **Templ Templates**: Type-safe HTML templating
 - **HTMX + Alpine.js**: Modern frontend interactivity without build steps
-- **OpenRouter Ready**: LLM integration capabilities
+- **LLM Ready**: LLM integration capabilities
 
 ## Quick Start
 

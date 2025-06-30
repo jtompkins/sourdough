@@ -29,7 +29,7 @@ db.reset:
 	rm *.db
 
 generate:
-	templ generate
+	go tool templ generate
 
 watch:
 	templ generate --watch --proxy=http://localhost:3000 --cmd="go run ."
