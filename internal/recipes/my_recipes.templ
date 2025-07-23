@@ -1,11 +1,8 @@
-package templates
+package recipes
 
-import (
-	"fmt"
-	"sourdough/internal/models"
-)
+import "fmt"
 
-templ MyRecipes(recipes []*models.Recipe) {
+templ MyRecipesView(recipes []*Recipe) {
 	@Layout("My Recipes") {
 		<main class="my-recipes">
 			<form action="/recipes" method="POST" hx-boost="false">

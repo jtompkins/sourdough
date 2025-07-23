@@ -1,23 +1,22 @@
-package repositories
+package recipes
 
 import (
 	"database/sql"
 	"encoding/json"
 	"errors"
 	"sourdough/internal/database"
-	"sourdough/internal/models"
 )
 
-type RecipesRepository struct {
+type Repository struct {
 	db *database.DB
 }
 
-func NewRecipesRepository(db *database.DB) *RecipesRepository {
-	return &RecipesRepository{db: db}
+func NewRepository(db *database.DB) *Repository {
+	return &Repository{db: db}
 }
 
-func (repo *RecipesRepository) Get(id int) (*models.Recipe, error) {
-	var recipe models.Recipe
+func (repo *Repository) Get(id int) (*Recipe, error) {
+	var recipe Recipe
 
 	err := repo.db.Get(&recipe, "SELECT * FROM recipes WHERE id = ?", id)
 
@@ -32,8 +31,8 @@ func (repo *RecipesRepository) Get(id int) (*models.Recipe, error) {
 	return &recipe, nil
 }
 
-func (repo *RecipesRepository) GetForUser(userID int) ([]*models.Recipe, error) {
-	var recipes []*models.Recipe
+func (repo *Repository) GetForUser(userID int) ([]*Recipe, error) {
+	var recipes []*Recipe
 
 	err := repo.db.Select(&recipes, "SELECT * FROM recipes WHERE user_id = ?", userID)
 
@@ -44,7 +43,7 @@ func (repo *RecipesRepository) GetForUser(userID int) ([]*models.Recipe, error) 
 	return recipes, nil
 }
 
-func (repo *RecipesRepository) Create(userID int, recipe *models.LLMRecipe) (*models.Recipe, error) {
+func (repo *Repository) Create(userID int, recipe *LLMRecipe) (*Recipe, error) {
 	ingredientsJson, err := json.Marshal(recipe.Ingredients)
 	if err != nil {
 		return nil, err

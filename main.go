@@ -6,9 +6,9 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"sourdough/internal/auth"
 	"sourdough/internal/database"
-	"sourdough/internal/handlers"
-	"sourdough/internal/repositories"
+	"sourdough/internal/recipes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -72,8 +72,8 @@ func main() {
 	app.Use(logger.New())
 	app.Use(cors.New())
 
-	userRepo := repositories.NewUserRepository(db)
-	recipiesRepo := repositories.NewRecipesRepository(db)
+	userRepo := auth.NewRepository(db)
+	recipesRepo := recipes.NewRepository(db)
 
 	model := viper.GetString("LLM_PROVIDER_MODEL")
 	apiKey := viper.GetString("LLM_PROVIDER_API_KEY")
@@ -87,12 +87,14 @@ func main() {
 	config.BaseURL = apiURL
 	openAIClient := openai.NewClientWithConfig(config)
 
-	recipesHandler := handlers.NewRecipesHandler(recipiesRepo, openAIClient, model)
-	authHandler := handlers.NewAuthHandler(userRepo, sessionStore)
+	llmService := recipes.NewLLMService(openAIClient, model)
+	recipesHandler := recipes.NewHandler(recipesRepo, llmService)
+	authHandler := auth.NewHandler(userRepo, sessionStore)
+	authMiddleware := auth.NewMiddleware(authHandler)
 
-	app.Get("/", authHandler.RequireAuth, recipesHandler.GetAllRecipes)
-	app.Get("/recipes/:id", authHandler.RequireAuth, recipesHandler.GetRecipe)
-	app.Post("/recipes", authHandler.RequireAuth, recipesHandler.PostRecipe)
+	app.Get("/", authMiddleware.RequireAuth, recipesHandler.GetAllRecipes)
+	app.Get("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.GetRecipe)
+	app.Post("/recipes", authMiddleware.RequireAuth, recipesHandler.PostRecipe)
 
 	app.Get("/login", authHandler.LoginPage)
 	app.Get("/auth/:provider", authHandler.Login)

@@ -1,10 +1,7 @@
-package handlers
+package auth
 
 import (
 	"log"
-	"sourdough/internal/models"
-	"sourdough/internal/repositories"
-	"sourdough/templates"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
@@ -12,22 +9,22 @@ import (
 	"github.com/shareed2k/goth_fiber"
 )
 
-type AuthHandler struct {
-	userRepo *repositories.UsersRepository
+type Handler struct {
+	userRepo *Repository
 	store    *session.Store
 }
 
-func NewAuthHandler(repo *repositories.UsersRepository, store *session.Store) *AuthHandler {
-	return &AuthHandler{userRepo: repo, store: store}
+func NewHandler(repo *Repository, store *session.Store) *Handler {
+	return &Handler{userRepo: repo, store: store}
 }
 
-func (h *AuthHandler) LoginPage(c *fiber.Ctx) error {
+func (h *Handler) LoginPage(c *fiber.Ctx) error {
 	c.Set("Content-Type", "text/html")
-	component := templates.Login()
+	component := LoginView()
 	return component.Render(c.Context(), c.Response().BodyWriter())
 }
 
-func (h *AuthHandler) Login(c *fiber.Ctx) error {
+func (h *Handler) Login(c *fiber.Ctx) error {
 	provider := c.Params("provider")
 	if provider == "" {
 		return c.Status(400).SendString("Provider is required")
@@ -36,7 +33,7 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 	return goth_fiber.BeginAuthHandler(c)
 }
 
-func (h *AuthHandler) Callback(c *fiber.Ctx) error {
+func (h *Handler) Callback(c *fiber.Ctx) error {
 	user, err := goth_fiber.CompleteUserAuth(c)
 	if err != nil {
 		log.Printf("Auth callback error: %v", err)
@@ -66,7 +63,7 @@ func (h *AuthHandler) Callback(c *fiber.Ctx) error {
 	return c.Redirect("/")
 }
 
-func (h *AuthHandler) Logout(c *fiber.Ctx) error {
+func (h *Handler) Logout(c *fiber.Ctx) error {
 	if err := goth_fiber.Logout(c); err != nil {
 		log.Printf("Logout error: %v", err)
 	}
@@ -88,27 +85,7 @@ func (h *AuthHandler) Logout(c *fiber.Ctx) error {
 	return c.Redirect("/")
 }
 
-func (h *AuthHandler) RequireAuth(c *fiber.Ctx) error {
-	sess, err := h.store.Get(c)
-	if err != nil {
-		return c.Status(401).Redirect("/login")
-	}
-
-	authenticated := sess.Get("authenticated")
-	if authenticated == nil || authenticated != true {
-		return c.Status(401).Redirect("/login")
-	}
-
-	user, err := h.getCurrentUser(c)
-	if err != nil {
-		return c.Status(401).Redirect("/login")
-	}
-
-	c.Locals("user", user)
-	return c.Next()
-}
-
-func (h *AuthHandler) findOrCreateUser(gothUser goth.User) (*models.User, error) {
+func (h *Handler) findOrCreateUser(gothUser goth.User) (*User, error) {
 	userId := gothUser.Provider + ":" + gothUser.UserID
 
 	user, err := h.userRepo.GetByProviderId(userId)
@@ -127,7 +104,7 @@ func (h *AuthHandler) findOrCreateUser(gothUser goth.User) (*models.User, error)
 	return user, nil
 }
 
-func (h *AuthHandler) getCurrentUser(c *fiber.Ctx) (*models.User, error) {
+func (h *Handler) getCurrentUser(c *fiber.Ctx) (*User, error) {
 	sess, err := h.store.Get(c)
 	if err != nil {
 		return nil, err

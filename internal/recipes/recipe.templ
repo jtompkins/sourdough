@@ -1,8 +1,6 @@
-package templates
+package recipes
 
-import "sourdough/internal/models"
-
-templ Recipe(recipe *models.Recipe) {
+templ RecipeView(recipe *Recipe) {
 	@Layout(recipe.Title) {
 		<main class="recipe">
 			<header>

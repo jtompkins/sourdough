@@ -1,22 +1,21 @@
-package repositories
+package auth
 
 import (
 	"database/sql"
 	"errors"
 	"sourdough/internal/database"
-	"sourdough/internal/models"
 )
 
-type UsersRepository struct {
+type Repository struct {
 	db *database.DB
 }
 
-func NewUserRepository(db *database.DB) *UsersRepository {
-	return &UsersRepository{db: db}
+func NewRepository(db *database.DB) *Repository {
+	return &Repository{db: db}
 }
 
-func (r *UsersRepository) Get(id int) (*models.User, error) {
-	var user models.User
+func (r *Repository) Get(id int) (*User, error) {
+	var user User
 
 	err := r.db.Get(&user, "SELECT * FROM users WHERE id = ?", id)
 
@@ -30,8 +29,8 @@ func (r *UsersRepository) Get(id int) (*models.User, error) {
 	return &user, nil
 }
 
-func (repo *UsersRepository) GetByProviderId(userId string) (*models.User, error) {
-	var user models.User
+func (repo *Repository) GetByProviderId(userId string) (*User, error) {
+	var user User
 
 	err := repo.db.Get(&user, "SELECT * from users where user_id = ?", userId)
 
@@ -45,7 +44,7 @@ func (repo *UsersRepository) GetByProviderId(userId string) (*models.User, error
 	return &user, nil
 }
 
-func (repo *UsersRepository) Create(userId string, provider string) (*models.User, error) {
+func (repo *Repository) Create(userId string, provider string) (*User, error) {
 	query := "INSERT INTO users (user_id, provider) VALUES (?, ?)"
 	tx, err := repo.db.Beginx()
 	if err != nil {

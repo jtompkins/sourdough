@@ -1,4 +1,4 @@
-package models
+package recipes
 
 import (
 	"sourdough/internal/database"
@@ -17,4 +17,13 @@ type Recipe struct {
 	Servings            int                        `db:"servings"`
 	CreatedAt           time.Time                  `db:"created_at"`
 	UpdatedAt           time.Time                  `db:"updated_at"`
+}
+
+type LLMRecipe struct {
+	Title       string   `json:"title"`
+	Ingredients []string `json:"ingredients"`
+	Directions  []string `json:"directions"`
+	PrepTime    string   `json:"prepTime"`
+	CookTime    string   `json:"cookTime"`
+	Servings    int      `json:"servings"`
 }

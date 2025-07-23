@@ -1,0 +1,112 @@
+package recipes
+
+import (
+	"errors"
+	"fmt"
+	"sourdough/internal/shared"
+	"strconv"
+
+	"github.com/gofiber/fiber/v2"
+)
+
+
+type Handler struct {
+	repo       *Repository
+	llmService *LLMService
+}
+
+func NewHandler(repo *Repository, llmService *LLMService) *Handler {
+	return &Handler{
+		repo:       repo,
+		llmService: llmService,
+	}
+}
+
+func (h *Handler) GetRecipe(c *fiber.Ctx) error {
+	user, err := h.getCurrentUserFromSession(c)
+	if err != nil {
+		return err
+	}
+
+	idParam := c.Params("id")
+
+	if idParam == "" {
+		return c.Status(400).SendString("Missing recipe ID")
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return c.Status(400).SendString("Invalid recipe ID")
+	}
+
+	recipe, err := h.repo.Get(id)
+
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	} else if recipe == nil {
+		return c.Status(404).SendString("Recipe not found")
+	}
+
+	if user.Id != recipe.UserID {
+		return c.Status(403).SendString("Forbidden")
+	}
+
+	c.Set("Content-Type", "text/html")
+	component := RecipeView(recipe)
+	return component.Render(c.Context(), c.Response().BodyWriter())
+}
+
+func (h *Handler) GetAllRecipes(c *fiber.Ctx) error {
+	user, err := h.getCurrentUserFromSession(c)
+	if err != nil {
+		return err
+	}
+
+	recipes, err := h.repo.GetForUser(user.Id)
+	if err != nil {
+		return err
+	}
+
+	c.Set("Content-Type", "text/html")
+	component := MyRecipesView(recipes)
+	return component.Render(c.Context(), c.Response().BodyWriter())
+}
+
+func (h *Handler) PostRecipe(c *fiber.Ctx) error {
+	user, err := h.getCurrentUserFromSession(c)
+	if err != nil {
+		if errors.Is(err, shared.ErrUnauthorized) {
+			return c.Status(401).Redirect("/login")
+		} else if errors.Is(err, shared.ErrUserNotFound) {
+			return c.Status(404).SendString("User not found")
+		}
+	}
+
+	text := c.FormValue("recipe")
+
+	recipe, err := h.llmService.FormatRecipe(text)
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+
+	result, err := h.repo.Create(user.Id, &recipe)
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+
+	return c.Redirect(fmt.Sprintf("/recipes/%d", result.ID))
+}
+
+func (h *Handler) getCurrentUserFromSession(c *fiber.Ctx) (*shared.UserInfo, error) {
+	userInterface := c.Locals("user")
+	if userInterface == nil {
+		return nil, shared.ErrUnauthorized
+	}
+
+	user, ok := userInterface.(*shared.UserInfo)
+	if !ok {
+		return nil, shared.ErrUserNotFound
+	}
+	
+	return user, nil
+}
