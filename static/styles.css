@@ -119,7 +119,6 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
 
     .button {
         font-size: 1.25rem;
@@ -148,6 +147,24 @@ textarea {
     }
 }
 
+input[type="text"] {
+    width: 100%;
+    padding: 1rem;
+
+    background-color: var(--color-stone-100);
+
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    border: 0;
+    border-radius: 0.5rem;
+
+    &:focus {
+        outline: 2px solid var(--color-stone-900);
+    }
+}
+
 main {
     margin-top: 3.75rem;
 
@@ -170,6 +187,10 @@ main {
         &:first-of-type {
             margin-top: 2.5rem;
         }
+    }
+
+    form {
+        align-items: flex-end;
     }
 }
 
@@ -262,5 +283,9 @@ main {
         @media print {
             flex-direction: row;
         }
+    }
+
+    input[type="text"] {
+        margin-top: 1rem;
     }
 }

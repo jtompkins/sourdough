@@ -2,7 +2,6 @@ package recipes
 
 import (
 	"database/sql"
-	"encoding/json"
 	"errors"
 	"sourdough/internal/database"
 )
@@ -43,20 +42,13 @@ func (repo *Repository) GetForUser(userID int) ([]*Recipe, error) {
 	return recipes, nil
 }
 
-func (repo *Repository) Create(userID int, recipe *LLMRecipe) (*Recipe, error) {
-	ingredientsJson, err := json.Marshal(recipe.Ingredients)
-	if err != nil {
-		return nil, err
-	}
+func (repo *Repository) Create(recipe *Recipe) (*Recipe, error) {
 
-	directionsJson, err := json.Marshal(recipe.Directions)
-	if err != nil {
-		return nil, err
-	}
-
-	result, err := repo.db.Exec("INSERT INTO recipes (user_id, title, ingredients, number_of_ingredients, directions, prep_time, cook_time, servings) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-		userID, recipe.Title, ingredientsJson, len(recipe.Ingredients), directionsJson, recipe.PrepTime, recipe.CookTime, recipe.Servings)
-
+	// Use SQLx's NamedExec to automatically map struct fields to query parameters
+	result, err := repo.db.NamedExec(
+		"INSERT INTO recipes (user_id, title, ingredients, number_of_ingredients, directions, prep_time, cook_time, servings) VALUES (:user_id, :title, :ingredients, :number_of_ingredients, :directions, :prep_time, :cook_time, :servings)",
+		recipe,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -68,4 +60,18 @@ func (repo *Repository) Create(userID int, recipe *LLMRecipe) (*Recipe, error) {
 
 	// Fetch and return the inserted recipe
 	return repo.Get(int(id))
+}
+
+func (repo *Repository) Update(recipe *Recipe) (*Recipe, error) {
+	// Use SQLx's NamedExec to automatically map struct fields to query parameters
+	_, err := repo.db.NamedExec(
+		"UPDATE recipes SET title = :title, ingredients = :ingredients, number_of_ingredients = :number_of_ingredients, directions = :directions, prep_time = :prep_time, cook_time = :cook_time, servings = :servings WHERE id = :id",
+		recipe,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	// Fetch and return the inserted recipe
+	return repo.Get(recipe.ID)
 }

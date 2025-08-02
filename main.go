@@ -93,7 +93,11 @@ func main() {
 	authMiddleware := auth.NewMiddleware(authHandler)
 
 	app.Get("/", authMiddleware.RequireAuth, recipesHandler.GetAllRecipes)
+
 	app.Get("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.GetRecipe)
+	app.Get("/recipes/:id/edit", authMiddleware.RequireAuth, recipesHandler.EditRecipe)
+	app.Patch("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.PatchRecipe)
+
 	app.Post("/recipes", authMiddleware.RequireAuth, recipesHandler.PostRecipe)
 
 	app.Get("/login", authHandler.LoginPage)

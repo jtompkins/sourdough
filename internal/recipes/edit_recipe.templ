@@ -1,0 +1,43 @@
+package recipes
+
+import "strings"
+
+templ EditRecipeView(recipe *Recipe) {
+	@Layout(recipe.Title) {
+		<main class="recipe">
+			<form action="/recipes/{recipe.ID}" method="POST">
+				<header>
+					<h2>{ recipe.Title }</h2>
+					<div class="recipe-info">
+						<section class="info-item">
+							<h3>Prep time</h3>
+							<input type="text" name="prep_time" value={ recipe.PrepTime } placeholder="Prep Time"/>
+						</section>
+						<section class="info-item">
+							<h3>Cook time</h3>
+							<input type="text" name="cook_time" value={ recipe.CookTime } placeholder="Cook Time"/>
+						</section>
+						<section class="info-item">
+							<h3>Number of Ingredients</h3>
+							<input type="text" name="number_of_ingredients" value={ recipe.NumberOfIngredients } placeholder="Number of Ingredients"/>
+						</section>
+						<section class="info-item">
+							<h3>Servings</h3>
+							<input type="text" name="servings" value={ recipe.Servings } placeholder="Servings"/>
+						</section>
+					</div>
+				</header>
+				<article>
+					<section id="ingredients">
+						<h3>Ingredients</h3>
+						<textarea name="ingredients" rows={ max(len(recipe.Ingredients), 20) } placeholder="Enter each ingredient on a new line">{ strings.Join(recipe.Ingredients, "\n") }</textarea>
+					</section>
+					<section id="directions">
+						<h3>Directions</h3>
+						<textarea name="directions" rows={ max(len(recipe.Directions), 20) } placeholder="Enter each direction on a new line">{ strings.Join(recipe.Directions, "\n") }</textarea>
+					</section>
+				</article>
+			</form>
+		</main>
+	}
+}

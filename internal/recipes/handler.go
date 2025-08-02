@@ -9,7 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-
 type Handler struct {
 	repo       *Repository
 	llmService *LLMService
@@ -56,6 +55,40 @@ func (h *Handler) GetRecipe(c *fiber.Ctx) error {
 	return component.Render(c.Context(), c.Response().BodyWriter())
 }
 
+func (h *Handler) EditRecipe(c *fiber.Ctx) error {
+	user, err := h.getCurrentUserFromSession(c)
+	if err != nil {
+		return err
+	}
+
+	idParam := c.Params("id")
+
+	if idParam == "" {
+		return c.Status(400).SendString("Missing recipe ID")
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return c.Status(400).SendString("Invalid recipe ID")
+	}
+
+	recipe, err := h.repo.Get(id)
+
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	} else if recipe == nil {
+		return c.Status(404).SendString("Recipe not found")
+	}
+
+	if user.Id != recipe.UserID {
+		return c.Status(403).SendString("Forbidden")
+	}
+
+	c.Set("Content-Type", "text/html")
+	component := EditRecipeView(recipe)
+	return component.Render(c.Context(), c.Response().BodyWriter())
+}
+
 func (h *Handler) GetAllRecipes(c *fiber.Ctx) error {
 	user, err := h.getCurrentUserFromSession(c)
 	if err != nil {
@@ -84,17 +117,56 @@ func (h *Handler) PostRecipe(c *fiber.Ctx) error {
 
 	text := c.FormValue("recipe")
 
-	recipe, err := h.llmService.FormatRecipe(text)
+	llmRecipe, err := h.llmService.FormatRecipe(text)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
 
-	result, err := h.repo.Create(user.Id, &recipe)
+	recipe := llmRecipe.ToRecipe(user.Id)
+
+	result, err := h.repo.Create(&recipe)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
 
 	return c.Redirect(fmt.Sprintf("/recipes/%d", result.ID))
+}
+
+func (h *Handler) PatchRecipe(c *fiber.Ctx) error {
+	user, err := h.getCurrentUserFromSession(c)
+	if err != nil {
+		if errors.Is(err, shared.ErrUnauthorized) {
+			return c.Status(401).Redirect("/login")
+		} else if errors.Is(err, shared.ErrUserNotFound) {
+			return c.Status(404).SendString("User not found")
+		}
+	}
+
+	// Get the recipe ID from URL parameters
+	idParam := c.Params("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return c.Status(400).SendString("Invalid recipe ID")
+	}
+
+	// Deserialize form data into FormRecipe struct
+	var formRecipe FormRecipe
+	if err := c.BodyParser(&formRecipe); err != nil {
+		return c.Status(400).SendString("Invalid form data: " + err.Error())
+	}
+
+	// Convert FormRecipe to Recipe model
+	recipe := formRecipe.ToRecipe(user.Id)
+	recipe.ID = id
+
+	// Update the recipe in the database (TODO: implement repo.Update)
+	_, err = h.repo.Update(&recipe)
+	if err != nil {
+		return c.Status(500).SendString("Failed to update recipe: " + err.Error())
+	}
+
+	// For now, just redirect back to the recipe page
+	return c.Redirect(fmt.Sprintf("/recipes/%d", id))
 }
 
 func (h *Handler) getCurrentUserFromSession(c *fiber.Ctx) (*shared.UserInfo, error) {
@@ -107,6 +179,6 @@ func (h *Handler) getCurrentUserFromSession(c *fiber.Ctx) (*shared.UserInfo, err
 	if !ok {
 		return nil, shared.ErrUserNotFound
 	}
-	
+
 	return user, nil
 }
