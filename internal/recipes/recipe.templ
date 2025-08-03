@@ -1,10 +1,17 @@
 package recipes
 
+import "strconv"
+
 templ RecipeView(recipe *Recipe) {
 	@Layout(recipe.Title) {
 		<main class="recipe">
 			<header>
 				<h2>{ recipe.Title }</h2>
+				<div class="toolbar">
+					<a href="/" class="button">Back</a>
+					<a href="#" onclick="window.print()" class="button">Print</a>
+					<a href={ "/recipes/" + strconv.Itoa(recipe.ID) + "/edit" } class="button">Edit</a>
+				</div>
 				<div class="recipe-info">
 					if recipe.PrepTime != "" || recipe.PrepTime == "N/A" {
 						<section class="info-item">
