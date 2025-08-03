@@ -165,8 +165,15 @@ func (h *Handler) PatchRecipe(c *fiber.Ctx) error {
 		return c.Status(500).SendString("Failed to update recipe: " + err.Error())
 	}
 
-	// For now, just redirect back to the recipe page
-	return c.Redirect(fmt.Sprintf("/recipes/%d", id))
+	// Check if this is an HTMX request
+	if c.Get("HX-Request") == "true" {
+		// For HTMX requests, send a redirect header to update the URL and content
+		c.Set("HX-Redirect", fmt.Sprintf("/recipes/%d", id))
+		return c.SendStatus(200)
+	} else {
+		// For regular requests, redirect back to the recipe page
+		return c.Redirect(fmt.Sprintf("/recipes/%d", id))
+	}
 }
 
 func (h *Handler) getCurrentUserFromSession(c *fiber.Ctx) (*shared.UserInfo, error) {

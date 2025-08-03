@@ -10,16 +10,14 @@ import (
 type JSONArray[T any] []T
 
 // Value implements the driver.Valuer interface
-// Uses a pointer receiver for consistency with Scan()
-func (ja *JSONArray[T]) Value() (driver.Value, error) {
-	if ja == nil || *ja == nil {
+func (ja JSONArray[T]) Value() (driver.Value, error) {
+	if ja == nil {
 		return nil, nil
 	}
-	return json.Marshal(*ja)
+	return json.Marshal(ja)
 }
 
 // Scan implements the sql.Scanner interface
-// Uses a pointer receiver since we need to modify the receiver
 func (ja *JSONArray[T]) Scan(value any) error {
 	if value == nil {
 		*ja = nil

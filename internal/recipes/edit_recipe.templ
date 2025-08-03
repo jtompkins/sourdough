@@ -1,13 +1,18 @@
 package recipes
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 templ EditRecipeView(recipe *Recipe) {
 	@Layout(recipe.Title) {
 		<main class="recipe">
-			<form action="/recipes/{recipe.ID}" method="POST">
+			<form hx-patch={ "/recipes/" + strconv.Itoa(recipe.ID) } hx-target="body" hx-swap="outerHTML">
 				<header>
-					<h2>{ recipe.Title }</h2>
+					<div class="receipe-title">
+						<input type="text" name="title" value={ recipe.Title } placeholder="Title"/>
+					</div>
 					<div class="recipe-info">
 						<section class="info-item">
 							<h3>Prep time</h3>
@@ -37,6 +42,10 @@ templ EditRecipeView(recipe *Recipe) {
 						<textarea name="directions" rows={ max(len(recipe.Directions), 20) } placeholder="Enter each direction on a new line">{ strings.Join(recipe.Directions, "\n") }</textarea>
 					</section>
 				</article>
+				<div class="toolbar">
+					<input type="submit" value="Save" class="save" hx-disabled-elt="this"/>
+					<a href={ "/recipes/" + strconv.Itoa(recipe.ID) } class="button">Cancel</a>
+				</div>
 			</form>
 		</main>
 	}

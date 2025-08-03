@@ -12,6 +12,8 @@
     --color-stone-400: oklch(70.9% 0.01 56.259);
     --color-stone-900: oklch(21.6% 0.006 56.043);
     --color-white: #fff;
+    --color-green-500: oklch(60% 0.214 120.815);
+    --color-green-700: oklch(75% 0.214 120.815);
 }
 
 * {
@@ -42,28 +44,6 @@ h4 {
     margin: 0;
     padding: 0;
     font-family: var(--font-display);
-}
-
-.button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 0.5rem;
-    transition: all 0.15s ease-in-out;
-    padding: 0.5rem 2rem;
-
-    font-family: var(--font-display);
-    font-weight: 700;
-
-    border: 0;
-    background-color: var(--color-stone-300);
-
-    &:hover {
-        background-color: var(--color-stone-400);
-        color: var(--color-white);
-    }
 }
 
 body {
@@ -120,10 +100,8 @@ form {
     display: flex;
     flex-direction: column;
 
-    .button {
-        font-size: 1.25rem;
-        margin-top: 1rem;
-        width: 9rem;
+    .button,
+    input[type="submit"] {
     }
 }
 
@@ -144,6 +122,34 @@ textarea {
 
     &:focus {
         outline: 2px solid var(--color-stone-900);
+    }
+}
+
+.button,
+button,
+input[type="submit"] {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.15s ease-in-out;
+
+    padding: 0.5rem 2rem;
+    border: 0;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    width: 9rem;
+
+    font-size: 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+
+    background-color: var(--color-stone-300);
+
+    &:hover {
+        background-color: var(--color-stone-400);
+        color: var(--color-white);
     }
 }
 
@@ -170,6 +176,31 @@ main {
 
     @media (max-width: 768px) {
         margin-top: 1.5rem;
+    }
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    input,
+    button,
+    .button {
+        margin-right: 0.5rem;
+
+        &.save {
+            background-color: var(--color-green-700);
+
+            &:hover {
+                background-color: var(--color-green-500);
+            }
+        }
+    }
+
+    @media print {
+        display: none;
     }
 }
 
@@ -204,10 +235,30 @@ main {
         display: flex;
         flex-direction: column;
 
+        .receipe-title {
+            input {
+                font-size: 1.75rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+            }
+        }
+
         .recipe-info {
             display: flex;
             flex-direction: row;
             margin-top: 1rem;
+            align-items: end;
+
+            @media (max-width: 768px) {
+                margin-top: 1.5rem;
+
+                flex-direction: column;
+                align-items: start;
+            }
+
+            @media print {
+                flex-direction: row;
+            }
         }
 
         .info-item {
@@ -217,6 +268,10 @@ main {
 
             h3 {
                 font-weight: 700;
+            }
+
+            @media (max-width: 768px) {
+                margin-top: 1.5rem;
             }
         }
     }
