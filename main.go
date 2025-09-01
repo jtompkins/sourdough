@@ -58,6 +58,7 @@ func main() {
 	goth_fiber.SessionStore = sessionStore
 
 	app := fiber.New(fiber.Config{
+		BodyLimit: 10 * 1024 * 1024, // 10MB limit for image uploads
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			code := fiber.StatusInternalServerError
 			if e, ok := err.(*fiber.Error); ok {
