@@ -5,16 +5,26 @@ import "fmt"
 templ GetAllRecipesView(recipes []*Recipe) {
 	@Layout("My Recipes") {
 		<main class="my-recipes">
-			<form action="/recipes" method="POST" hx-boost="false">
-				<textarea
-					name="recipe"
-					id="recipe"
-					class="recipe-textarea"
-					rows="10"
-					placeholder="Paste your recipe here"
-				></textarea>
-				<input class="button" type="submit" value="Add"/>
-			</form>
+			<div x-data="recipeForm()">
+				<form action="/recipes" method="POST" enctype="multipart/form-data" hx-boost="false">
+					<div @paste="handlePaste($event)" class="recipe-input-area">
+						<textarea
+							name="recipe"
+							id="recipe"
+							class="recipe-textarea"
+							rows="10"
+							placeholder="Paste your recipe here or paste an image from clipboard"
+							x-show="!hasImage"
+						></textarea>
+						<div x-show="hasImage" class="image-preview-area">
+							<img x-bind:src="imagePreview" alt="Recipe image preview" class="recipe-image-preview"/>
+							<button type="button" @click="clearImage()" class="button secondary">Remove Image</button>
+						</div>
+						<input type="file" name="recipeImage" x-ref="fileInput" style="display: none;" accept="image/*"/>
+					</div>
+					<input class="button" type="submit" value="Add"/>
+				</form>
+			</div>
 			for _, recipe := range recipes {
 				<section>
 					<h2><a href={ fmt.Sprintf("/recipes/%d", recipe.ID) }>{ recipe.Title }</a></h2>
@@ -27,5 +37,49 @@ templ GetAllRecipesView(recipes []*Recipe) {
 				</section>
 			}
 		</main>
+		<script>
+			function recipeForm() {
+				return {
+					hasImage: false,
+					imagePreview: '',
+					
+					handlePaste(event) {
+						const items = event.clipboardData?.items;
+						if (!items) return;
+						
+						for (let item of items) {
+							if (item.type.indexOf('image') !== -1) {
+								event.preventDefault();
+								const file = item.getAsFile();
+								if (file) {
+									this.setImageFile(file);
+								}
+								break;
+							}
+						}
+					},
+					
+					setImageFile(file) {
+						this.hasImage = true;
+						const reader = new FileReader();
+						reader.onload = (e) => {
+							this.imagePreview = e.target.result;
+						};
+						reader.readAsDataURL(file);
+						
+						// Set the file input
+						const dt = new DataTransfer();
+						dt.items.add(file);
+						this.$refs.fileInput.files = dt.files;
+					},
+					
+					clearImage() {
+						this.hasImage = false;
+						this.imagePreview = '';
+						this.$refs.fileInput.value = '';
+					}
+				}
+			}
+		</script>
 	}
 }

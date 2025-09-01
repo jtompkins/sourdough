@@ -1,8 +1,10 @@
 package recipes
 
 import (
+	"encoding/base64"
 	"errors"
 	"fmt"
+	"io"
 	"sourdough/internal/shared"
 	"strconv"
 
@@ -115,11 +117,39 @@ func (h *Handler) CreateRecipe(c *fiber.Ctx) error {
 		}
 	}
 
-	text := c.FormValue("recipe")
+	var llmRecipe LLMRecipe
 
-	llmRecipe, err := h.llmService.FormatRecipe(text)
-	if err != nil {
-		return c.Status(500).SendString(err.Error())
+	// Check if an image was uploaded
+	imageFile, err := c.FormFile("recipeImage")
+	if err == nil && imageFile != nil {
+		// Process image
+		file, err := imageFile.Open()
+		if err != nil {
+			return c.Status(500).SendString("Failed to open image file")
+		}
+		defer file.Close()
+
+		imageData, err := io.ReadAll(file)
+		if err != nil {
+			return c.Status(500).SendString("Failed to read image file")
+		}
+
+		base64Image := base64.StdEncoding.EncodeToString(imageData)
+		llmRecipe, err = h.llmService.FormatRecipeFromImage(base64Image, imageFile.Header.Get("Content-Type"))
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+	} else {
+		// Process text recipe
+		text := c.FormValue("recipe")
+		if text == "" {
+			return c.Status(400).SendString("Please provide either a recipe text or paste an image")
+		}
+
+		llmRecipe, err = h.llmService.FormatRecipe(text)
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
 	}
 
 	recipe := llmRecipe.ToRecipe(user.Id)
