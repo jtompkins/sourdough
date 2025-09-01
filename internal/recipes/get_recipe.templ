@@ -2,7 +2,7 @@ package recipes
 
 import "strconv"
 
-templ RecipeView(recipe *Recipe) {
+templ GetRecipeView(recipe *Recipe) {
 	@Layout(recipe.Title) {
 		<main class="recipe">
 			<header>

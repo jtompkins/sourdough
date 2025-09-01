@@ -2,7 +2,7 @@ package recipes
 
 import "fmt"
 
-templ MyRecipesView(recipes []*Recipe) {
+templ GetAllRecipesView(recipes []*Recipe) {
 	@Layout("My Recipes") {
 		<main class="my-recipes">
 			<form action="/recipes" method="POST" hx-boost="false">

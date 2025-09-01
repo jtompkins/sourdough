@@ -96,9 +96,9 @@ func main() {
 
 	app.Get("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.GetRecipe)
 	app.Get("/recipes/:id/edit", authMiddleware.RequireAuth, recipesHandler.EditRecipe)
-	app.Patch("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.PatchRecipe)
 
-	app.Post("/recipes", authMiddleware.RequireAuth, recipesHandler.PostRecipe)
+	app.Patch("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.UpdateRecipe)
+	app.Post("/recipes", authMiddleware.RequireAuth, recipesHandler.CreateRecipe)
 
 	app.Get("/login", authHandler.LoginPage)
 	app.Get("/auth/:provider", authHandler.Login)

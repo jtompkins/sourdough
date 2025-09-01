@@ -51,7 +51,7 @@ func (h *Handler) GetRecipe(c *fiber.Ctx) error {
 	}
 
 	c.Set("Content-Type", "text/html")
-	component := RecipeView(recipe)
+	component := GetRecipeView(recipe)
 	return component.Render(c.Context(), c.Response().BodyWriter())
 }
 
@@ -101,11 +101,11 @@ func (h *Handler) GetAllRecipes(c *fiber.Ctx) error {
 	}
 
 	c.Set("Content-Type", "text/html")
-	component := MyRecipesView(recipes)
+	component := GetAllRecipesView(recipes)
 	return component.Render(c.Context(), c.Response().BodyWriter())
 }
 
-func (h *Handler) PostRecipe(c *fiber.Ctx) error {
+func (h *Handler) CreateRecipe(c *fiber.Ctx) error {
 	user, err := h.getCurrentUserFromSession(c)
 	if err != nil {
 		if errors.Is(err, shared.ErrUnauthorized) {
@@ -132,7 +132,7 @@ func (h *Handler) PostRecipe(c *fiber.Ctx) error {
 	return c.Redirect(fmt.Sprintf("/recipes/%d", result.ID))
 }
 
-func (h *Handler) PatchRecipe(c *fiber.Ctx) error {
+func (h *Handler) UpdateRecipe(c *fiber.Ctx) error {
 	user, err := h.getCurrentUserFromSession(c)
 	if err != nil {
 		if errors.Is(err, shared.ErrUnauthorized) {
