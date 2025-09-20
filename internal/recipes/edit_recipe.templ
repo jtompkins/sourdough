@@ -9,29 +9,35 @@ templ EditRecipeView(recipe *Recipe) {
 	@Layout(recipe.Title) {
 		<main class="recipe">
 			<form hx-patch={ "/recipes/" + strconv.Itoa(recipe.ID) } hx-target="body" hx-swap="outerHTML">
-				<header>
-					<div class="receipe-title">
-						<input type="text" name="title" value={ recipe.Title } placeholder="Title"/>
+				<div class="toolbar">
+					<div class="toolbar--left">
+						<button type="submit" value="Save" class="button button--action" hx-disabled-elt="this">
+							<i class="fa-solid fa-floppy-disk"></i> Save
+						</button>
+						<a href={ "/recipes/" + strconv.Itoa(recipe.ID) } class="button"><i class="fa-solid fa-xmark"></i>Maybe next time?</a>
 					</div>
-					<div class="recipe-info">
-						<section class="info-item">
-							<h3>Prep time</h3>
-							<input type="text" name="prep_time" value={ recipe.PrepTime } placeholder="Prep Time"/>
-						</section>
-						<section class="info-item">
-							<h3>Cook time</h3>
-							<input type="text" name="cook_time" value={ recipe.CookTime } placeholder="Cook Time"/>
-						</section>
-						<section class="info-item">
-							<h3>Number of Ingredients</h3>
-							<input type="text" name="number_of_ingredients" value={ recipe.NumberOfIngredients } placeholder="Number of Ingredients"/>
-						</section>
-						<section class="info-item">
-							<h3>Servings</h3>
-							<input type="text" name="servings" value={ recipe.Servings } placeholder="Servings"/>
-						</section>
-					</div>
-				</header>
+				</div>
+				<div class="recipe-title">
+					<input type="text" name="title" value={ recipe.Title } placeholder="Title"/>
+				</div>
+				<div class="recipe-info">
+					<section class="info-item">
+						<h3>Prep time</h3>
+						<input type="text" name="prep_time" value={ recipe.PrepTime } placeholder="Prep Time"/>
+					</section>
+					<section class="info-item">
+						<h3>Cook time</h3>
+						<input type="text" name="cook_time" value={ recipe.CookTime } placeholder="Cook Time"/>
+					</section>
+					<section class="info-item">
+						<h3># of Ingredients</h3>
+						<input type="text" name="number_of_ingredients" value={ recipe.NumberOfIngredients } placeholder="Number of Ingredients"/>
+					</section>
+					<section class="info-item">
+						<h3>Servings</h3>
+						<input type="text" name="servings" value={ recipe.Servings } placeholder="Servings"/>
+					</section>
+				</div>
 				<article>
 					<section id="ingredients">
 						<h3>Ingredients</h3>
@@ -42,10 +48,6 @@ templ EditRecipeView(recipe *Recipe) {
 						<textarea name="directions" rows={ max(len(recipe.Directions), 20) } placeholder="Enter each direction on a new line">{ strings.Join(recipe.Directions, "\n") }</textarea>
 					</section>
 				</article>
-				<div class="toolbar">
-					<input type="submit" value="Save" class="save" hx-disabled-elt="this"/>
-					<a href={ "/recipes/" + strconv.Itoa(recipe.ID) } class="button">Cancel</a>
-				</div>
 			</form>
 		</main>
 	}

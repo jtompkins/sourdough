@@ -5,36 +5,38 @@ import "strconv"
 templ GetRecipeView(recipe *Recipe) {
 	@Layout(recipe.Title) {
 		<main class="recipe">
-			<header>
-				<h2>{ recipe.Title }</h2>
-				<div class="toolbar">
-					<a href="/" class="button">Back</a>
-					<a href="#" onclick="window.print()" class="button">Print</a>
-					<a href={ "/recipes/" + strconv.Itoa(recipe.ID) + "/edit" } class="button">Edit</a>
+			<div class="toolbar">
+				<div class="toolbar--left">
+					<a href="/" class="button"><i class="fa-solid fa-chevron-left"></i>Back</a>
 				</div>
-				<div class="recipe-info">
-					if recipe.PrepTime != "" || recipe.PrepTime == "N/A" {
-						<section class="info-item">
-							<h3>Prep time</h3>
-							<span>{ recipe.PrepTime }</span>
-						</section>
-					}
-					if recipe.CookTime != "" || recipe.CookTime == "N/A" {
-						<section class="info-item">
-							<h3>Cook time</h3>
-							<span>{ recipe.CookTime }</span>
-						</section>
-					}
-					<section class="info-item">
-						<h3>Number of Ingredients</h3>
-						<span>{ recipe.NumberOfIngredients }</span>
-					</section>
-					<section class="info-item">
-						<h3>Servings</h3>
-						<span>{ recipe.Servings }</span>
-					</section>
+				<div class="toolbar--right">
+					<a href={ "/recipes/" + strconv.Itoa(recipe.ID) + "/edit" } class="button"><i class="fa-solid fa-pen"></i>Edit</a>
+					<a href="#" onclick="window.print()" class="button button--action"><i class="fa-solid fa-print"></i>Print</a>
 				</div>
-			</header>
+			</div>
+			<h2>{ recipe.Title }</h2>
+			<div class="recipe-info">
+				if recipe.PrepTime != "" || recipe.PrepTime == "N/A" {
+					<section class="info-item">
+						<h3>Prep time</h3>
+						<span>{ recipe.PrepTime }</span>
+					</section>
+				}
+				if recipe.CookTime != "" || recipe.CookTime == "N/A" {
+					<section class="info-item">
+						<h3>Cook time</h3>
+						<span>{ recipe.CookTime }</span>
+					</section>
+				}
+				<section class="info-item">
+					<h3># of Ingredients</h3>
+					<span>{ recipe.NumberOfIngredients }</span>
+				</section>
+				<section class="info-item">
+					<h3>Servings</h3>
+					<span>{ recipe.Servings }</span>
+				</section>
+			</div>
 			<article>
 				<section id="ingredients">
 					<h3>Ingredients</h3>

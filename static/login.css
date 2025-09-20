@@ -1,17 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root {
-    --font-display: "Fraunces", serif;
-    --color-red-100: oklch(93.6% 0.032 17.717);
-    --color-red-400: oklch(70.4% 0.191 22.216);
-    --color-red-700: oklch(50.5% 0.213 27.518);
-    --color-blue-500: oklch(62.3% 0.214 259.815);
-    --color-stone-100: oklch(97% 0.001 106.424);
-    --color-stone-200: oklch(92.3% 0.003 48.717);
-    --color-stone-300: oklch(86.9% 0.005 56.366);
-    --color-stone-400: oklch(70.9% 0.01 56.259);
-    --color-stone-900: oklch(21.6% 0.006 56.043);
-    --color-white: #fff;
+    --color-bg: white;
+    --color-fg: black;
+    --color-highlight: #cc0000;
+
+    --font-display: "Instrument Serif", serif;
+    --font-body: "Instrument Sans", sans-serif;
 }
 
 * {
@@ -25,49 +20,68 @@ body {
     height: 100%;
     width: 100%;
 
-    background-color: var(--color-stone-200);
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+}
 
-    color: var(--color-stone-900);
+html {
+    background-color: var(--color-highlight);
 }
 
 body {
-    height: 100%;
-    width: 100%;
-
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+
+    margin-top: 50px;
+    padding-left: 25%;
+    padding-right: 25%;
+
+    font-size: 16pt;
+}
+
+header {
+    margin-top: -48px;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+
+    font-family: var(--font-display);
+    font-size: 8rem;
+    font-style: italic;
+    font-weight: 400;
+
+    color: var(--color-highlight);
 }
 
 main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 
-    width: 50%;
+    margin-top: 4rem;
 
-    background-color: var(--color-stone-400);
-
-    padding: 2.5rem 2rem;
-    border-radius: 0.5rem;
-    box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-    @media (max-width: 768px) {
-        width: 90%;
-    }
-}
-
-h1 {
     font-family: var(--font-display);
-    font-weight: 800;
-    color: var(--color-stone-900);
-    font-size: 2.25rem;
-    line-height: 2.25rem;
-    margin: 0;
-    padding: 0;
+    font-weight: 400;
+    font-size: 3rem;
+
+    line-height: 3.25rem;
+
+    p {
+        margin: 0;
+        padding: 0;
+
+        margin-bottom: 2rem;
+    }
+
+    strong {
+        color: var(--color-highlight);
+        font-weight: 400;
+    }
+
+    /* @media (max-width: 768px) {
+        width: 90%;
+    } */
 }
 
 .error-message {
@@ -88,22 +102,25 @@ h1 {
 
 .button {
     display: flex;
-    justify-content: center;
     align-items: center;
+
+    width: fit-content;
 
     text-decoration: none;
 
-    width: 100%;
-    padding: 0.75rem 4rem;
-    margin-top: 2rem;
-
     font-size: 1.25rem;
-    font-family: var(--font-display);
-    font-weight: 700;
-    color: var(--color-stone-900);
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--color-fg);
 
-    border-radius: 0.375rem;
-    background-color: var(--color-stone-100);
+    border: 2px solid var(--color-fg);
+    border-radius: 2rem;
+    background-color: var(--color-bg);
+
+    margin-top: 1rem;
+
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 
     svg {
         width: 1.1rem;

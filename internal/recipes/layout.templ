@@ -9,17 +9,17 @@ templ Layout(title string) {
 			<title>Sourdough - { title }</title>
 			<link rel="preconnect" href="https://fonts.googleapis.com"/>
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-			<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet"/>
 			<script src="https://unpkg.com/htmx.org@2.0.3"></script>
 			<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+			<script src="https://kit.fontawesome.com/994b24a8e7.js" crossorigin="anonymous"></script>
 			<link href="/static/styles.css" rel="stylesheet"/>
 		</head>
 		<body>
 			<header id="sourdough-header">
-				<h1><a href="/">Sourdough.</a></h1>
-				<nav>
-					<a class="button" href="/logout">Logout</a>
-				</nav>
+				<h1>sourdough</h1>
+				// <nav>
+				// 	<a class="button" href="/logout">Logout</a>
+				// </nav>
 			</header>
 			<div>
 				{ children... }

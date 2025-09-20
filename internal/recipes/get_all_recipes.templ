@@ -5,32 +5,35 @@ import "fmt"
 templ GetAllRecipesView(recipes []*Recipe) {
 	@Layout("My Recipes") {
 		<main class="my-recipes">
-			<div x-data="recipeForm()">
-				<form action="/recipes" method="POST" enctype="multipart/form-data" hx-boost="false">
-					<div @paste="handlePaste($event)" class="recipe-input-area">
-						<textarea
-							name="recipe"
-							id="recipe"
-							class="recipe-textarea"
-							rows="10"
-							placeholder="Paste your recipe here or paste an image from clipboard"
-							x-show="!hasImage"
-						></textarea>
-						<div x-show="hasImage" class="image-preview-area">
-							<img x-bind:src="imagePreview" alt="Recipe image preview" class="recipe-image-preview"/>
-							<button type="button" @click="clearImage()" class="button secondary">Remove Image</button>
-						</div>
-						<input type="file" name="recipeImage" x-ref="fileInput" style="display: none;" accept="image/*"/>
-					</div>
-					<input class="button" type="submit" value="Add"/>
-				</form>
-			</div>
+		<header>
+			<input type="text" placeholder="search your recipes" /> <span class="button button--action"><i class="fa-solid fa-plus"></i> new recipe</span>
+		</header>
+			// <div x-data="recipeForm()">
+			// 	<form action="/recipes" method="POST" enctype="multipart/form-data" hx-boost="false">
+			// 		<div @paste="handlePaste($event)" class="recipe-input-area">
+			// 			<textarea
+			// 				name="recipe"
+			// 				id="recipe"
+			// 				class="recipe-textarea"
+			// 				rows="10"
+			// 				placeholder="Paste your recipe here or paste an image from clipboard"
+			// 				x-show="!hasImage"
+			// 			></textarea>
+			// 			<div x-show="hasImage" class="image-preview-area">
+			// 				<img x-bind:src="imagePreview" alt="Recipe image preview" class="recipe-image-preview"/>
+			// 				<button type="button" @click="clearImage()" class="button secondary">Remove Image</button>
+			// 			</div>
+			// 			<input type="file" name="recipeImage" x-ref="fileInput" style="display: none;" accept="image/*"/>
+			// 		</div>
+			// 		<input class="button" type="submit" value="Add"/>
+			// 	</form>
+			// </div>
 			for _, recipe := range recipes {
 				<section>
 					<h2><a href={ fmt.Sprintf("/recipes/%d", recipe.ID) }>{ recipe.Title }</a></h2>
 					<span>
 						if recipe.CookTime != "" {
-							{ recipe.CookTime },
+							{ recipe.CookTime } to prepare,
 						}
 						{ recipe.NumberOfIngredients } ingredients. Serves { recipe.Servings }.
 					</span>

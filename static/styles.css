@@ -1,19 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root {
-    --font-display: "Fraunces", serif;
-    --color-red-100: oklch(93.6% 0.032 17.717);
-    --color-red-400: oklch(70.4% 0.191 22.216);
-    --color-red-700: oklch(50.5% 0.213 27.518);
-    --color-blue-500: oklch(62.3% 0.214 259.815);
-    --color-stone-100: oklch(97% 0.001 106.424);
-    --color-stone-200: oklch(92.3% 0.003 48.717);
-    --color-stone-300: oklch(86.9% 0.005 56.366);
-    --color-stone-400: oklch(70.9% 0.01 56.259);
-    --color-stone-900: oklch(21.6% 0.006 56.043);
-    --color-white: #fff;
-    --color-green-500: oklch(60% 0.214 120.815);
-    --color-green-700: oklch(75% 0.214 120.815);
+    --color-bg: white;
+    --color-fg: black;
+    --color-highlight: #cc0000;
+    --color-subdued: #828282;
+
+    --font-display: "Instrument Serif", serif;
+    --font-body: "Instrument Sans", sans-serif;
 }
 
 * {
@@ -27,14 +21,35 @@ body {
     height: 100%;
     width: 100%;
 
-    background-color: var(--color-stone-200);
-
-    color: var(--color-stone-900);
+    background-color: var(--color-bg);
+    color: var(--color-fg);
 }
 
-a {
-    text-decoration: none;
-    color: var(--color-stone-900);
+html {
+    background-color: var(--color-highlight);
+
+    @media print {
+        background-color: var(--color-fg);
+    }
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 50px;
+    padding-left: 25%;
+    padding-right: 25%;
+
+    font-size: 16pt;
+    font-family: var(--font-body);
+    font-weight: 400;
+
+    @media print {
+        margin-top: 0;
+        padding-left: 2%;
+        padding-right: 2%;
+    }
 }
 
 h1,
@@ -44,68 +59,45 @@ h4 {
     margin: 0;
     padding: 0;
     font-family: var(--font-display);
+    font-weight: 400;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
+a {
+    color: var(--color-fg);
+    text-decoration: none;
 
-    width: 75%;
-    padding-top: 10rem;
-    margin-left: 12.5%;
-
-    @media (max-width: 768px) {
-        width: 90%;
-
-        padding-top: 2rem;
-        margin-left: 5%;
-    }
-
-    @media print {
-        width: 100%;
-        margin-left: 0;
-        padding-top: 0;
-    }
-}
-
-h1 {
-    font-size: 2.25rem;
-    font-weight: 800;
-
-    @media (max-width: 768px) {
-        font-size: 2rem;
+    &:hover {
+        color: var(--color-highlight);
+        text-decoration: underline;
     }
 }
 
 #sourdough-header {
-    width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
 
-    .button {
-        background-color: transparent;
+    margin-top: -48px;
 
-        &:hover {
-            background-color: var(--color-stone-400);
-        }
+    h1 {
+        font-size: 8rem;
+        font-style: italic;
 
-        @media print {
-            display: none;
-        }
+        color: var(--color-highlight);
+    }
+
+    @media print {
+        display: none;
     }
 }
 
-form {
+/* form {
     display: flex;
     flex-direction: column;
 
     .button,
-    input[type="submit"] {
-    }
-}
+    input[type="submit"] {}
+} */
 
-textarea {
+/* textarea {
     width: 100%;
     padding: 1rem;
 
@@ -123,80 +115,32 @@ textarea {
     &:focus {
         outline: 2px solid var(--color-stone-900);
     }
-}
-
-.button,
-button,
-input[type="submit"] {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
-    transition: all 0.15s ease-in-out;
-
-    padding: 0.5rem 2rem;
-    border: 0;
-    border-radius: 0.5rem;
-    margin-top: 1rem;
-    width: 9rem;
-
-    font-size: 1.25rem;
-    font-family: var(--font-display);
-    font-weight: 700;
-
-    background-color: var(--color-stone-300);
-
-    &:hover {
-        background-color: var(--color-stone-400);
-        color: var(--color-white);
-    }
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 1rem;
-
-    background-color: var(--color-stone-100);
-
-    box-shadow:
-        0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
-    border: 0;
-    border-radius: 0.5rem;
-
-    &:focus {
-        outline: 2px solid var(--color-stone-900);
-    }
-}
+} */
 
 main {
-    margin-top: 3.75rem;
+    margin-top: 4rem;
 
+    @media print {
+        margin-top: 1rem;
+    }
+
+    /* 
     @media (max-width: 768px) {
         margin-top: 1.5rem;
-    }
+    } */
 }
 
 .toolbar {
     display: flex;
     flex-direction: row;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    justify-content: space-between;
+
+    margin-bottom: 1.5rem;
 
     input,
-    button,
-    .button {
-        margin-right: 0.5rem;
-
-        &.save {
-            background-color: var(--color-green-700);
-
-            &:hover {
-                background-color: var(--color-green-500);
-            }
-        }
+    button {
+        background-color: transparent;
+        border: none;
     }
 
     @media print {
@@ -204,19 +148,77 @@ main {
     }
 }
 
+.toolbar--left {
+    display: flex;
+    flex-direction: row;
+
+    .button {
+        margin-right: 2rem;
+    }
+}
+
+.toolbar--right {
+    display: flex;
+    flex-direction: row;
+
+    .button {
+        margin-left: 2rem;
+    }
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    font-size: 1.15rem;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: none !important;
+    }
+
+    i {
+        margin-right: .5rem;
+    }
+}
+
+.button--action {
+    color: var(--color-highlight);
+}
+
+.button--subdued {
+    color: var(--color-subdued);
+}
+
 .my-recipes {
     h2 {
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-size: 2rem;
+    }
 
-        margin-bottom: 0.25rem;
+    header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        input {
+            padding: 0.5rem 1rem;
+
+            margin-right: 1rem;
+
+            border-radius: 2rem;
+
+            font-size: 1rem;
+        }
+
+        margin-bottom: 2rem;
     }
 
     section {
-        margin-bottom: 1.5rem;
+        margin-bottom: 2rem;
 
-        &:first-of-type {
-            margin-top: 2.5rem;
+        span {
+            font-size: 12pt;
         }
     }
 
@@ -227,81 +229,108 @@ main {
 
 .recipe {
     h2 {
-        font-size: 1.75rem;
-        font-weight: 700;
+        font-size: 3rem;
+        margin-bottom: 2rem;
+
+        @media print {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
     }
 
-    header {
+    .recipe-info {
         display: flex;
-        flex-direction: column;
-
-        .receipe-title {
-            input {
-                font-size: 1.75rem;
-                font-weight: 700;
-                margin-bottom: 1rem;
-            }
-        }
-
-        .recipe-info {
-            display: flex;
-            flex-direction: row;
-            margin-top: 1rem;
-            align-items: end;
-
-            @media (max-width: 768px) {
-                margin-top: 1.5rem;
-
-                flex-direction: column;
-                align-items: start;
-            }
-
-            @media print {
-                flex-direction: row;
-            }
-        }
+        flex-direction: row;
+        align-items: end;
 
         .info-item {
             display: flex;
             flex-direction: column;
-            margin-right: 7.5rem;
+            margin-right: 4rem;
+
+            font-size: 1rem;
 
             h3 {
+                font-size: 1rem;
+                font-family: var(--font-body);
                 font-weight: 700;
             }
 
             @media (max-width: 768px) {
                 margin-top: 1.5rem;
             }
+        }
+
+        /* @media (max-width: 768px) {
+            margin-top: 1.5rem;
+
+            flex-direction: column;
+            align-items: start;
+        } */
+
+        /* @media print {
+            flex-direction: row;
+        } */
+    }
+
+    input,
+    textarea {
+        border: 2px dashed var(--color-subdued);
+        border-radius: 2rem;
+
+        width: 100%;
+
+        font-family: var(--font-body);
+    }
+
+    textarea {
+        padding: 2rem;
+    }
+
+    .recipe-title {
+        margin: 2rem 0;
+
+        input {
+            font-size: 1.5rem;
+            padding: 1rem 1.5rem;
+        }
+    }
+
+    .recipe-info {
+        input {
+            margin-top: 1rem;
+            padding: .5rem 1rem;
         }
     }
 
     article {
         display: flex;
-        flex-direction: row;
-        margin-top: 3rem;
+        flex-direction: column;
+
+        margin-top: 2rem;
+
+        font-size: 1rem;
 
         h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 2rem;
             margin-bottom: 1rem;
-        }
 
-        li {
-            margin-bottom: 0.75rem;
+            @media print {
+                font-size: 1.25rem;
+            }
         }
 
         #ingredients {
-            width: 33%;
-            margin-right: 5rem;
+            margin-bottom: 2rem;
 
             ul {
-                padding-left: 1.25rem;
+                margin: 0;
+                padding: 0 1.25rem;
             }
 
-            @media (max-width: 768px) {
+            /* @media (max-width: 768px) {
                 width: 100%;
-            }
+            } */
 
             @media print {
                 width: 25%;
@@ -310,26 +339,30 @@ main {
         }
 
         #directions {
-            width: 66%;
-
             ol {
-                padding-left: 1.25rem;
+                margin: 0;
+                padding: 0 1.25rem;
             }
 
-            @media (max-width: 768px) {
+            /* @media (max-width: 768px) {
                 width: 100%;
 
                 margin-top: 1.5rem;
-            }
+            } */
 
             @media print {
                 width: 75%;
-
-                margin-top: 0;
             }
         }
 
-        @media (max-width: 768px) {
+        @media print {
+            margin-top: 1rem;
+
+            flex-direction: row;
+            font-size: .75rem;
+        }
+
+        /* @media (max-width: 768px) {
             margin-top: 1.5rem;
 
             flex-direction: column;
@@ -337,11 +370,7 @@ main {
 
         @media print {
             flex-direction: row;
-        }
-    }
-
-    input[type="text"] {
-        margin-top: 1rem;
+        } */
     }
 }
 
@@ -373,7 +402,7 @@ main {
 
 .button.secondary {
     background-color: var(--color-red-400);
-    
+
     &:hover {
         background-color: var(--color-red-700);
         color: var(--color-white);

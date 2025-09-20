@@ -11,10 +11,31 @@ templ LoginView() {
 			<link href="/static/login.css" rel="stylesheet"/>
 		</head>
 		<body>
+			<header>
+				<h1>sourdough</h1>
+			</header>
 			<main>
-				<h1>
-					Sourdough.
-				</h1>
+				<p>
+					<strong>Sourdough</strong> is a website.
+				</p>
+
+				<p>
+					You can <strong>save recipes</strong> here.
+				</p>
+
+				<p>
+					We use the <strong>power of AI</strong> to clean up recipes from all sorts of sources.
+				</p>
+
+				<p>
+					You can <strong>print your recipes</strong>, too.
+				</p>
+
+				<p>
+					Give it a shot, it's <strong>free</strong>.
+				</p>
+
+
 				if params := ctx.Value("error"); params != nil {
 					<div class="error-message">
 						Authentication failed. Please try again.
