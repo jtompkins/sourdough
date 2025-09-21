@@ -4,30 +4,29 @@ import "fmt"
 
 templ GetAllRecipesView(recipes []*Recipe) {
 	@Layout("My Recipes") {
-		<main class="my-recipes">
-		<header>
-			<input type="text" placeholder="search your recipes" /> <span class="button button--action"><i class="fa-solid fa-plus"></i> new recipe</span>
-		</header>
-			// <div x-data="recipeForm()">
-			// 	<form action="/recipes" method="POST" enctype="multipart/form-data" hx-boost="false">
-			// 		<div @paste="handlePaste($event)" class="recipe-input-area">
-			// 			<textarea
-			// 				name="recipe"
-			// 				id="recipe"
-			// 				class="recipe-textarea"
-			// 				rows="10"
-			// 				placeholder="Paste your recipe here or paste an image from clipboard"
-			// 				x-show="!hasImage"
-			// 			></textarea>
-			// 			<div x-show="hasImage" class="image-preview-area">
-			// 				<img x-bind:src="imagePreview" alt="Recipe image preview" class="recipe-image-preview"/>
-			// 				<button type="button" @click="clearImage()" class="button secondary">Remove Image</button>
-			// 			</div>
-			// 			<input type="file" name="recipeImage" x-ref="fileInput" style="display: none;" accept="image/*"/>
-			// 		</div>
-			// 		<input class="button" type="submit" value="Add"/>
-			// 	</form>
-			// </div>
+		<main class="my-recipes" x-data="{ showInputs: false }">
+			<header>
+				<input type="text" placeholder="search your recipes"/> <span class="button button--action" @click="showInputs = true" x-show="!showInputs"><i class="fa-solid fa-plus"></i> new recipe</span>
+			</header>
+			<div class="add-recipe" x-data="newRecipeComponent()" x-show="showInputs" @paste="handlePaste($event)">
+				<form action="/recipes" method="POST" enctype="multipart/form-data" hx-boost="false">
+					<div class="recipe-placeholder" x-show="!inputType">
+						<i class="fa-solid fa-paste"></i>Paste in your recipe &mdash; you can use images or text!
+					</div>
+					<div class="recipe-image" x-show="inputType === 'image'">
+						<img x-bind:src="imagePreview"/>
+					</div>
+					<div class="recipe-text" x-show="inputType === 'text'" x-text="textPreview"></div>
+					<div class="toolbar">
+						<div class="toolbar--left">
+							<button type="submit" class="button button--action" x-show="inputType"><i class="fa-solid fa-floppy-disk"></i>Save</button>
+							<a class="button" @click="cancel(); showInputs=false;"><i class="fa-solid fa-xmark"></i>Maybe next time?</a>
+						</div>
+					</div>
+					<input type="file" name="recipeImage" x-ref="recipeImage" style="display: none;" accept="image/*"/>
+					<input type="text" name="recipeText" x-ref="recipeText" style="display: none;"/>
+				</form>
+			</div>
 			for _, recipe := range recipes {
 				<section>
 					<h2><a href={ fmt.Sprintf("/recipes/%d", recipe.ID) }>{ recipe.Title }</a></h2>
@@ -41,10 +40,11 @@ templ GetAllRecipesView(recipes []*Recipe) {
 			}
 		</main>
 		<script>
-			function recipeForm() {
+			function newRecipeComponent() {
 				return {
-					hasImage: false,
+					inputType: '',
 					imagePreview: '',
+					textPreview: '',
 					
 					handlePaste(event) {
 						const items = event.clipboardData?.items;
@@ -58,12 +58,21 @@ templ GetAllRecipesView(recipes []*Recipe) {
 									this.setImageFile(file);
 								}
 								break;
+							} else if (item.kind === 'string' && item.type === 'text/plain') {
+								event.preventDefault();
+								item.getAsString(s => this.setText(s));
 							}
 						}
 					},
+
+					setText(text) {
+						this.inputType="text";
+						this.textPreview = text;
+						this.$refs.recipeText.value=text;
+					},
 					
 					setImageFile(file) {
-						this.hasImage = true;
+						this.inputType = "image";
 						const reader = new FileReader();
 						reader.onload = (e) => {
 							this.imagePreview = e.target.result;
@@ -73,13 +82,15 @@ templ GetAllRecipesView(recipes []*Recipe) {
 						// Set the file input
 						const dt = new DataTransfer();
 						dt.items.add(file);
-						this.$refs.fileInput.files = dt.files;
+						this.$refs.recipeImage.files = dt.files;
 					},
-					
-					clearImage() {
-						this.hasImage = false;
+
+					cancel() {
+						this.inputType='';
 						this.imagePreview = '';
-						this.$refs.fileInput.value = '';
+						this.textPreview = '';
+						this.$refs.recipeImage.value = '';
+						this.$refs.recipeText.value = '';
 					}
 				}
 			}

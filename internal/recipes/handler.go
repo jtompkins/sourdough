@@ -141,7 +141,7 @@ func (h *Handler) CreateRecipe(c *fiber.Ctx) error {
 		}
 	} else {
 		// Process text recipe
-		text := c.FormValue("recipe")
+		text := c.FormValue("recipeText")
 		if text == "" {
 			return c.Status(400).SendString("Please provide either a recipe text or paste an image")
 		}

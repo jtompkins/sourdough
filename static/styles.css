@@ -18,8 +18,6 @@ html,
 body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    width: 100%;
 
     background-color: var(--color-bg);
     color: var(--color-fg);
@@ -27,6 +25,8 @@ body {
 
 html {
     background-color: var(--color-highlight);
+    height: 100%;
+    width: 100%;
 
     @media print {
         background-color: var(--color-fg);
@@ -36,6 +36,8 @@ html {
 body {
     display: flex;
     flex-direction: column;
+
+    min-height: 100%;
 
     margin-top: 50px;
     padding-left: 25%;
@@ -89,35 +91,68 @@ a {
     }
 }
 
-/* form {
+.add-recipe {
     display: flex;
     flex-direction: column;
 
-    .button,
-    input[type="submit"] {}
-} */
-
-/* textarea {
-    width: 100%;
-    padding: 1rem;
-
-    background-color: var(--color-stone-100);
-
-    box-shadow:
-        0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
-    border: 0;
-    border-radius: 0.5rem;
-
-    resize: none;
-
-    &:focus {
-        outline: 2px solid var(--color-stone-900);
+    form {
+        display: flex;
+        flex-direction: column;
     }
-} */
+
+    .recipe-placeholder {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 1rem;
+
+        border: 2px dashed var(--color-subdued);
+        border-radius: .5rem;
+
+        padding: 1rem 0;
+
+        i {
+            margin-right: .5rem;
+        }
+    }
+
+    .recipe-text {
+        display: flex;
+        flex-direction: row;
+
+        font-size: 1rem;
+
+        border: 2px dashed var(--color-subdued);
+        border-radius: .5rem;
+
+        padding: 2rem 2rem;
+    }
+
+    .recipe-image {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 1rem;
+
+        border: 2px dashed var(--color-subdued);
+        border-radius: .5rem;
+
+        padding: 1rem 0;
+    }
+
+    .toolbar {
+        margin-top: 1rem;
+    }
+}
 
 main {
+    display: flex;
+    flex-direction: column;
+
     margin-top: 4rem;
 
     @media print {
@@ -220,10 +255,6 @@ main {
         span {
             font-size: 12pt;
         }
-    }
-
-    form {
-        align-items: flex-end;
     }
 }
 

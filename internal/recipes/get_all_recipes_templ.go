@@ -43,7 +43,7 @@ func GetAllRecipesView(recipes []*Recipe) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<main class=\"my-recipes\"><header><input type=\"text\" placeholder=\"search your recipes\"> <span class=\"button button--action\"><i class=\"fa-solid fa-plus\"></i> new recipe</span></header>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<main class=\"my-recipes\" x-data=\"{ showInputs: false }\"><header><input type=\"text\" placeholder=\"search your recipes\"> <span class=\"button button--action\" @click=\"showInputs = true\" x-show=\"!showInputs\"><i class=\"fa-solid fa-plus\"></i> new recipe</span></header><div class=\"add-recipe\" x-data=\"newRecipeComponent()\" x-show=\"showInputs\" @paste=\"handlePaste($event)\"><form action=\"/recipes\" method=\"POST\" enctype=\"multipart/form-data\" hx-boost=\"false\"><div class=\"recipe-placeholder\" x-show=\"!inputType\"><i class=\"fa-solid fa-paste\"></i>Paste in your recipe &mdash; you can use images or text!</div><div class=\"recipe-image\" x-show=\"inputType === 'image'\"><img x-bind:src=\"imagePreview\"></div><div class=\"recipe-text\" x-show=\"inputType === 'text'\" x-text=\"textPreview\"></div><div class=\"toolbar\"><div class=\"toolbar--left\"><button type=\"submit\" class=\"button button--action\" x-show=\"inputType\"><i class=\"fa-solid fa-floppy-disk\"></i>Save</button> <a class=\"button\" @click=\"cancel(); showInputs=false;\"><i class=\"fa-solid fa-xmark\"></i>Maybe next time?</a></div></div><input type=\"file\" name=\"recipeImage\" x-ref=\"recipeImage\" style=\"display: none;\" accept=\"image/*\"> <input type=\"text\" name=\"recipeText\" x-ref=\"recipeText\" style=\"display: none;\"></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -55,7 +55,7 @@ func GetAllRecipesView(recipes []*Recipe) templ.Component {
 				var templ_7745c5c3_Var3 templ.SafeURL
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinURLErrs(fmt.Sprintf("/recipes/%d", recipe.ID))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 33, Col: 56}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 32, Col: 56}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -68,7 +68,7 @@ func GetAllRecipesView(recipes []*Recipe) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 33, Col: 73}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 32, Col: 73}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -82,7 +82,7 @@ func GetAllRecipesView(recipes []*Recipe) templ.Component {
 					var templ_7745c5c3_Var5 string
 					templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.CookTime)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 36, Col: 24}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 35, Col: 24}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 					if templ_7745c5c3_Err != nil {
@@ -96,7 +96,7 @@ func GetAllRecipesView(recipes []*Recipe) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.NumberOfIngredients)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 38, Col: 34}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 37, Col: 34}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -109,7 +109,7 @@ func GetAllRecipesView(recipes []*Recipe) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Servings)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 38, Col: 74}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/recipes/get_all_recipes.templ`, Line: 37, Col: 74}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -120,7 +120,7 @@ func GetAllRecipesView(recipes []*Recipe) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</main><script>\n\t\t\tfunction recipeForm() {\n\t\t\t\treturn {\n\t\t\t\t\thasImage: false,\n\t\t\t\t\timagePreview: '',\n\t\t\t\t\t\n\t\t\t\t\thandlePaste(event) {\n\t\t\t\t\t\tconst items = event.clipboardData?.items;\n\t\t\t\t\t\tif (!items) return;\n\t\t\t\t\t\t\n\t\t\t\t\t\tfor (let item of items) {\n\t\t\t\t\t\t\tif (item.type.indexOf('image') !== -1) {\n\t\t\t\t\t\t\t\tevent.preventDefault();\n\t\t\t\t\t\t\t\tconst file = item.getAsFile();\n\t\t\t\t\t\t\t\tif (file) {\n\t\t\t\t\t\t\t\t\tthis.setImageFile(file);\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t\n\t\t\t\t\tsetImageFile(file) {\n\t\t\t\t\t\tthis.hasImage = true;\n\t\t\t\t\t\tconst reader = new FileReader();\n\t\t\t\t\t\treader.onload = (e) => {\n\t\t\t\t\t\t\tthis.imagePreview = e.target.result;\n\t\t\t\t\t\t};\n\t\t\t\t\t\treader.readAsDataURL(file);\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Set the file input\n\t\t\t\t\t\tconst dt = new DataTransfer();\n\t\t\t\t\t\tdt.items.add(file);\n\t\t\t\t\t\tthis.$refs.fileInput.files = dt.files;\n\t\t\t\t\t},\n\t\t\t\t\t\n\t\t\t\t\tclearImage() {\n\t\t\t\t\t\tthis.hasImage = false;\n\t\t\t\t\t\tthis.imagePreview = '';\n\t\t\t\t\t\tthis.$refs.fileInput.value = '';\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</main><script>\n\t\t\tfunction newRecipeComponent() {\n\t\t\t\treturn {\n\t\t\t\t\tinputType: '',\n\t\t\t\t\timagePreview: '',\n\t\t\t\t\ttextPreview: '',\n\t\t\t\t\t\n\t\t\t\t\thandlePaste(event) {\n\t\t\t\t\t\tconst items = event.clipboardData?.items;\n\t\t\t\t\t\tif (!items) return;\n\t\t\t\t\t\t\n\t\t\t\t\t\tfor (let item of items) {\n\t\t\t\t\t\t\tif (item.type.indexOf('image') !== -1) {\n\t\t\t\t\t\t\t\tevent.preventDefault();\n\t\t\t\t\t\t\t\tconst file = item.getAsFile();\n\t\t\t\t\t\t\t\tif (file) {\n\t\t\t\t\t\t\t\t\tthis.setImageFile(file);\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t} else if (item.kind === 'string' && item.type === 'text/plain') {\n\t\t\t\t\t\t\t\tevent.preventDefault();\n\t\t\t\t\t\t\t\titem.getAsString(s => this.setText(s));\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\n\t\t\t\t\tsetText(text) {\n\t\t\t\t\t\tthis.inputType=\"text\";\n\t\t\t\t\t\tthis.textPreview = text;\n\t\t\t\t\t\tthis.$refs.recipeText.value=text;\n\t\t\t\t\t},\n\t\t\t\t\t\n\t\t\t\t\tsetImageFile(file) {\n\t\t\t\t\t\tthis.inputType = \"image\";\n\t\t\t\t\t\tconst reader = new FileReader();\n\t\t\t\t\t\treader.onload = (e) => {\n\t\t\t\t\t\t\tthis.imagePreview = e.target.result;\n\t\t\t\t\t\t};\n\t\t\t\t\t\treader.readAsDataURL(file);\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Set the file input\n\t\t\t\t\t\tconst dt = new DataTransfer();\n\t\t\t\t\t\tdt.items.add(file);\n\t\t\t\t\t\tthis.$refs.recipeImage.files = dt.files;\n\t\t\t\t\t},\n\n\t\t\t\t\tcancel() {\n\t\t\t\t\t\tthis.inputType='';\n\t\t\t\t\t\tthis.imagePreview = '';\n\t\t\t\t\t\tthis.textPreview = '';\n\t\t\t\t\t\tthis.$refs.recipeImage.value = '';\n\t\t\t\t\t\tthis.$refs.recipeText.value = '';\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
