@@ -1,12 +1,10 @@
 package recipes
 
-import "fmt"
-
 templ GetAllRecipesView(recipes []*Recipe) {
 	@Layout("My Recipes") {
 		<main class="my-recipes" x-data="{ showInputs: false }">
 			<header>
-				<input type="text" placeholder="search your recipes"/> <span class="button button--action" @click="showInputs = true" x-show="!showInputs"><i class="fa-solid fa-plus"></i> new recipe</span>
+				<input type="text" name="term" placeholder="search your recipes" hx-get="/search" hx-trigger="keyup changed delay:250ms" hx-target="#recipe-list"/> <span class="button button--action" @click="showInputs = true" x-show="!showInputs"><i class="fa-solid fa-plus"></i> new recipe</span>
 			</header>
 			<div class="add-recipe" x-data="newRecipeComponent()" x-show="showInputs" @paste="handlePaste($event)">
 				<form action="/recipes" method="POST" enctype="multipart/form-data" hx-boost="false">
@@ -27,17 +25,11 @@ templ GetAllRecipesView(recipes []*Recipe) {
 					<input type="text" name="recipeText" x-ref="recipeText" style="display: none;"/>
 				</form>
 			</div>
-			for _, recipe := range recipes {
-				<section>
-					<h2><a href={ fmt.Sprintf("/recipes/%d", recipe.ID) }>{ recipe.Title }</a></h2>
-					<span>
-						if recipe.CookTime != "" {
-							{ recipe.CookTime } to prepare,
-						}
-						{ recipe.NumberOfIngredients } ingredients. Serves { recipe.Servings }.
-					</span>
-				</section>
-			}
+			<div id="recipe-list">
+				for _, recipe := range recipes {
+					@RecipeComponent(recipe)
+				}
+			</div>
 		</main>
 		<script>
 			function newRecipeComponent() {
