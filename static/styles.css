@@ -47,6 +47,12 @@ body {
     font-family: var(--font-body);
     font-weight: 400;
 
+    @media (max-width: 768px) {
+        margin-top: 10px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
     @media print {
         margin-top: 0;
         padding-left: 2%;
@@ -84,6 +90,11 @@ a {
         font-style: italic;
 
         color: var(--color-highlight);
+
+        @media (max-width: 768px) {
+            font-size: 4rem;
+            margin-top: 25px;
+        }
     }
 
     @media print {
@@ -154,15 +165,16 @@ main {
     flex-direction: column;
 
     margin-top: 4rem;
+    padding-bottom: 4rem;
 
     @media print {
         margin-top: 1rem;
     }
 
-    /* 
     @media (max-width: 768px) {
-        margin-top: 1.5rem;
-    } */
+        margin-top: 1rem;
+        padding-bottom: 1rem;
+    }
 }
 
 .toolbar {
@@ -263,6 +275,11 @@ main {
         font-size: 3rem;
         margin-bottom: 2rem;
 
+        @media (max-width: 768px) {
+            font-size: 2.5rem;
+            margin-bottom: 0;
+        }
+
         @media print {
             font-size: 2rem;
             margin-bottom: 1rem;
@@ -292,16 +309,14 @@ main {
             }
         }
 
-        /* @media (max-width: 768px) {
-            margin-top: 1.5rem;
-
+        @media (max-width: 768px) {
             flex-direction: column;
             align-items: start;
-        } */
+        }
 
-        /* @media print {
+        @media print {
             flex-direction: row;
-        } */
+        }
     }
 
     input,
@@ -359,10 +374,6 @@ main {
                 padding: 0 1.25rem;
             }
 
-            /* @media (max-width: 768px) {
-                width: 100%;
-            } */
-
             @media print {
                 width: 25%;
                 margin-right: 2.5rem;
@@ -375,12 +386,6 @@ main {
                 padding: 0 1.25rem;
             }
 
-            /* @media (max-width: 768px) {
-                width: 100%;
-
-                margin-top: 1.5rem;
-            } */
-
             @media print {
                 width: 75%;
             }
@@ -392,16 +397,6 @@ main {
             flex-direction: row;
             font-size: .75rem;
         }
-
-        /* @media (max-width: 768px) {
-            margin-top: 1.5rem;
-
-            flex-direction: column;
-        }
-
-        @media print {
-            flex-direction: row;
-        } */
     }
 }
 
