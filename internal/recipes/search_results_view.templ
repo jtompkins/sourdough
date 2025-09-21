@@ -1,0 +1,7 @@
+package recipes
+
+templ SearchResultsView(recipes []*Recipe) {
+	for _, recipe := range recipes {
+		@RecipeComponent(recipe)
+	}
+}

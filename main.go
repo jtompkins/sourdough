@@ -95,6 +95,8 @@ func main() {
 
 	app.Get("/", authMiddleware.RequireAuth, recipesHandler.GetAllRecipes)
 
+	app.Get("/search", authMiddleware.RequireAuth, recipesHandler.SearchRecipes)
+
 	app.Get("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.GetRecipe)
 	app.Get("/recipes/:id/edit", authMiddleware.RequireAuth, recipesHandler.EditRecipe)
 

@@ -107,6 +107,24 @@ func (h *Handler) GetAllRecipes(c *fiber.Ctx) error {
 	return component.Render(c.Context(), c.Response().BodyWriter())
 }
 
+func (h *Handler) SearchRecipes(c *fiber.Ctx) error {
+	user, err := h.getCurrentUserFromSession(c)
+	if err != nil {
+		return err
+	}
+
+	searchTerm := c.Query("term")
+
+	recipes, err := h.repo.Search(user.Id, searchTerm)
+	if err != nil {
+		return err
+	}
+
+	c.Set("Content-Type", "text/html")
+	component := SearchResultsView(recipes)
+	return component.Render(c.Context(), c.Response().BodyWriter())
+}
+
 func (h *Handler) CreateRecipe(c *fiber.Ctx) error {
 	user, err := h.getCurrentUserFromSession(c)
 	if err != nil {

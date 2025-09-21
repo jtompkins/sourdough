@@ -42,6 +42,20 @@ func (repo *Repository) GetForUser(userID int) ([]*Recipe, error) {
 	return recipes, nil
 }
 
+func (repo *Repository) Search(userID int, searchTerm string) ([]*Recipe, error) {
+	var recipes []*Recipe
+
+	likeClause := "%" + searchTerm + "%"
+
+	err := repo.db.Select(&recipes, "SELECT * FROM recipes WHERE user_id = ? and title LIKE ?", userID, likeClause)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return recipes, nil
+}
+
 func (repo *Repository) Create(recipe *Recipe) (*Recipe, error) {
 
 	// Use SQLx's NamedExec to automatically map struct fields to query parameters

@@ -1,0 +1,15 @@
+package recipes
+
+import "fmt"
+
+templ RecipeComponent(recipe *Recipe) {
+	<section>
+		<h2><a href={ fmt.Sprintf("/recipes/%d", recipe.ID) }>{ recipe.Title }</a></h2>
+		<span>
+			if recipe.CookTime != "" {
+				{ recipe.CookTime } to prepare,
+			}
+			{ recipe.NumberOfIngredients } ingredients. Serves { recipe.Servings }.
+		</span>
+	</section>
+}
