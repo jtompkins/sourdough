@@ -100,6 +100,7 @@ func main() {
 	app.Get("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.GetRecipe)
 	app.Get("/recipes/:id/edit", authMiddleware.RequireAuth, recipesHandler.EditRecipe)
 
+	app.Delete("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.DeleteRecipe)
 	app.Patch("/recipes/:id", authMiddleware.RequireAuth, recipesHandler.UpdateRecipe)
 	app.Post("/recipes", authMiddleware.RequireAuth, recipesHandler.CreateRecipe)
 

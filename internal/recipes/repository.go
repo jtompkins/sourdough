@@ -30,6 +30,26 @@ func (repo *Repository) Get(id int) (*Recipe, error) {
 	return &recipe, nil
 }
 
+func (repo *Repository) Delete(id int) (bool, error) {
+	result, err := repo.db.Exec("DELETE FROM recipes WHERE id = ?", id)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return false, nil
+		}
+
+		return false, err
+	}
+
+	rows, err := result.RowsAffected()
+
+	if err != nil {
+		return false, err
+	}
+
+	return rows > 0, nil
+}
+
 func (repo *Repository) GetForUser(userID int) ([]*Recipe, error) {
 	var recipes []*Recipe
 

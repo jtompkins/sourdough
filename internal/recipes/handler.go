@@ -224,6 +224,45 @@ func (h *Handler) UpdateRecipe(c *fiber.Ctx) error {
 	}
 }
 
+func (h *Handler) DeleteRecipe(c *fiber.Ctx) error {
+	user, err := h.getCurrentUserFromSession(c)
+	if err != nil {
+		return err
+	}
+
+	idParam := c.Params("id")
+
+	if idParam == "" {
+		return c.Status(400).SendString("Missing recipe ID")
+	}
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return c.Status(400).SendString("Invalid recipe ID")
+	}
+
+	recipe, err := h.repo.Get(id)
+
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	} else if recipe == nil {
+		return c.Status(404).SendString("Recipe not found")
+	}
+
+	if user.Id != recipe.UserID {
+		return c.Status(403).SendString("Forbidden")
+	}
+
+	_, err = h.repo.Delete(id)
+
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+
+	c.Set("HX-Redirect", "/")
+	return c.SendStatus(204)
+}
+
 func (h *Handler) getCurrentUserFromSession(c *fiber.Ctx) (*shared.UserInfo, error) {
 	userInterface := c.Locals("user")
 	if userInterface == nil {
