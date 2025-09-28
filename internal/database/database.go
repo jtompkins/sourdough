@@ -24,6 +24,10 @@ func New(dbPath string) (*DB, error) {
 		return nil, err
 	}
 
+	if err := database.updateTables(); err != nil {
+		return nil, err
+	}
+
 	return database, nil
 }
 
@@ -44,6 +48,7 @@ func (db *DB) createTables() error {
 		ingredients TEXT NOT NULL,
 		number_of_ingredients INTEGER NOT NULL,
 		directions TEXT NOT NULL,
+		notes TEXT NOT NULL,
 		prep_time TEXT NOT NULL,
 		cook_time TEXT NOT NULL,
 		servings INTEGER NOT NULL,
@@ -53,6 +58,23 @@ func (db *DB) createTables() error {
 	`
 
 	db.MustExec(query)
+
+	return nil
+}
+
+func (db *DB) updateTables() error {
+	migrations := []string{
+		`ALTER TABLE recipes ADD COLUMN notes TEXT DEFAULT '' NOT NULL`,
+	}
+
+	for _, migration := range migrations {
+		_, err := db.Exec(migration)
+		if err != nil {
+			// SQLite will return an error if column already exists
+			// This is expected behavior for migrations
+			continue
+		}
+	}
 
 	return nil
 }
