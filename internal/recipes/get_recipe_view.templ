@@ -55,6 +55,14 @@ templ GetRecipeView(recipe *Recipe) {
 						}
 					</ol>
 				</section>
+				if recipe.Notes != "" || recipe.Notes == "N/A" {
+					<section id="notes">
+						<h3>Notes</h3>
+						<p>
+							{ recipe.Notes }
+						</p>
+					</section>
+				}
 			</article>
 		</main>
 	}

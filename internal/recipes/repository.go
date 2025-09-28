@@ -80,7 +80,7 @@ func (repo *Repository) Create(recipe *Recipe) (*Recipe, error) {
 
 	// Use SQLx's NamedExec to automatically map struct fields to query parameters
 	result, err := repo.db.NamedExec(
-		"INSERT INTO recipes (user_id, title, ingredients, number_of_ingredients, directions, prep_time, cook_time, servings) VALUES (:user_id, :title, :ingredients, :number_of_ingredients, :directions, :prep_time, :cook_time, :servings)",
+		"INSERT INTO recipes (user_id, title, ingredients, number_of_ingredients, directions, notes, prep_time, cook_time, servings) VALUES (:user_id, :title, :ingredients, :number_of_ingredients, :directions, :notes, :prep_time, :cook_time, :servings)",
 		recipe,
 	)
 	if err != nil {
@@ -99,7 +99,7 @@ func (repo *Repository) Create(recipe *Recipe) (*Recipe, error) {
 func (repo *Repository) Update(recipe *Recipe) (*Recipe, error) {
 	// Use SQLx's NamedExec to automatically map struct fields to query parameters
 	_, err := repo.db.NamedExec(
-		"UPDATE recipes SET title = :title, ingredients = :ingredients, number_of_ingredients = :number_of_ingredients, directions = :directions, prep_time = :prep_time, cook_time = :cook_time, servings = :servings WHERE id = :id",
+		"UPDATE recipes SET title = :title, ingredients = :ingredients, number_of_ingredients = :number_of_ingredients, directions = :directions, notes = :notes, prep_time = :prep_time, cook_time = :cook_time, servings = :servings WHERE id = :id",
 		recipe,
 	)
 	if err != nil {

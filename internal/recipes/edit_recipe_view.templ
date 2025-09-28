@@ -47,6 +47,10 @@ templ EditRecipeView(recipe *Recipe) {
 						<h3>Directions</h3>
 						<textarea name="directions" rows={ max(len(recipe.Directions), 20) } placeholder="Enter each direction on a new line">{ strings.Join(recipe.Directions, "\n") }</textarea>
 					</section>
+					<section id="notes">
+						<h3>Notes</h3>
+						<textarea name="notes" rows={ max(len(recipe.Notes), 20) }>{ recipe.Notes }</textarea>
+					</section>
 				</article>
 			</form>
 		</main>

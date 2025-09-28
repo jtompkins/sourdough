@@ -15,18 +15,20 @@ const LLM_SYSTEM_PROMPT = `
 		2. Simplify individual steps in the instructions where it makes sense, but DO NOT remove or skip steps
 		3. If you cannot determine a value for any of fields, output an empty string ("") for the value, DO NOT substitute any other value or skip the field
 		4. If the recipe you're given is missing cook time or prep time, output an empty string ("") for the value, DO NOT substitute any other value or skip the field
-		5. Return your modified version of the recipe in JSON format, adhering to the following schema:
+		5. Some recipes include a "notes" section, which is separate from the directions. If the recipe has one of those, clean up the text and include it in the "notes" field.
+		6. Return your modified version of the recipe in JSON format, adhering to the following schema:
 			{
 				"title": "string",
-				"prepTime": "string", # in hours and minutes
-				"cookTime": "string", # in hours and minutes
+				"prepTime": "string", // in hours and minutes
+				"cookTime": "string", // in hours and minutes
 				"servings": "number",
 				"ingredients": [
 					"string"
 				],
 				"instructions": [
 					"string"
-				]
+				],
+				"notes": "string" // extract this from the recipe input if possible
 			}
 `
 
@@ -38,18 +40,20 @@ const LLM_IMAGE_SYSTEM_PROMPT = `
 		3. Organize the instructions into clear, sequential steps
 		4. If you cannot determine a value for any of the fields, output an empty string ("") for the value, DO NOT substitute any other value or skip the field
 		5. If the recipe is missing cook time or prep time, output an empty string ("") for the value, DO NOT substitute any other value or skip the field
-		6. Return your extracted and formatted version of the recipe in JSON format, adhering to the following schema:
+		6. Some recipes include a "notes" section, which is separate from the directions. If the recipe has one of those, clean up the text and include it in the "notes" field.
+		7. Return your extracted and formatted version of the recipe in JSON format, adhering to the following schema:
 			{
 				"title": "string",
-				"prepTime": "string", # in hours and minutes
-				"cookTime": "string", # in hours and minutes
+				"prepTime": "string", // in hours and minutes
+				"cookTime": "string", // in hours and minutes
 				"servings": "number",
 				"ingredients": [
 					"string"
 				],
 				"instructions": [
 					"string"
-				]
+				],
+				"notes": "string" // extract this from the recipe input if possible
 			}
 `
 

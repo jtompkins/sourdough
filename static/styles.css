@@ -381,6 +381,8 @@ main {
         }
 
         #directions {
+            margin-bottom: 2rem;
+
             ol {
                 margin: 0;
                 padding: 0 1.25rem;
