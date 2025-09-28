@@ -239,9 +239,7 @@ main {
 }
 
 .my-recipes {
-    h2 {
-        font-size: 2rem;
-    }
+
 
     header {
         display: flex;
@@ -261,11 +259,31 @@ main {
         margin-bottom: 2rem;
     }
 
-    section {
+    .recipe-item {
+
         margin-bottom: 2rem;
+
+        h2 {
+            display: flex;
+            flex-direction: row;
+            font-size: 1.5rem;
+            font-family: var(--font-body);
+            font-weight: 500;
+        }
 
         span {
             font-size: 12pt;
+        }
+
+        .button {
+            display: none;
+            margin-left: .5rem;
+        }
+
+        &:hover {
+            .button {
+                display: flex;
+            }
         }
     }
 }

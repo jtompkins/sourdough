@@ -49,7 +49,7 @@ templ EditRecipeView(recipe *Recipe) {
 					</section>
 					<section id="notes">
 						<h3>Notes</h3>
-						<textarea name="notes" rows={ max(len(recipe.Notes), 20) }>{ recipe.Notes }</textarea>
+						<textarea name="notes" rows="20">{ recipe.Notes }</textarea>
 					</section>
 				</article>
 			</form>
