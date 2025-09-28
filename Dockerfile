@@ -10,8 +10,6 @@ WORKDIR /app
 COPY go.mod go.sum ./
 # Download Go modules
 RUN go mod download
-# Install templ for code generation
-RUN go install github.com/a-h/templ/cmd/templ@latest
 
 # Copy Makefile so we can run make commands
 COPY Makefile ./

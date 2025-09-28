@@ -32,7 +32,7 @@ generate:
 	go tool templ generate
 
 watch:
-	templ generate --watch --proxy=http://localhost:8080 --cmd="go run ."
+	go tool templ generate --watch --proxy=http://localhost:8080 --cmd="go run ."
 
 docker.build:
 	docker build -t sourdough-app .
