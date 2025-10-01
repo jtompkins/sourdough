@@ -1,4 +1,4 @@
-# Recipe App
+# Sourdough
 
 A Go-based recipe management application built with Fiber, SQLite, and server-side rendering using Templ templates.
 
@@ -10,6 +10,7 @@ A Go-based recipe management application built with Fiber, SQLite, and server-si
 - [Fly console](https://fly.io/apps/sourdough)
 - [Google cloud console](https://console.cloud.google.com/auth/clients)
 - [Cloudflare console](https://dash.cloudflare.com/e22ddf4182166a6d342828d2b40b4313/sourdoughed.com)
+- [Font Awesome dashboard](https://fontawesome.com/kits/994b24a8e7/settings)
 
 ### Required environment configuration
 
