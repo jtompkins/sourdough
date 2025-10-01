@@ -6,9 +6,10 @@ A Go-based recipe management application built with Fiber, SQLite, and server-si
 
 ### Critical links
 
-- [Production app](https://sourdough.joshtompkins.codes)
+- [Production app](https://sourdoughed.com)
 - [Fly console](https://fly.io/apps/sourdough)
 - [Google cloud console](https://console.cloud.google.com/auth/clients)
+- [Cloudflare console](https://dash.cloudflare.com/e22ddf4182166a6d342828d2b40b4313/sourdoughed.com)
 
 ### Required environment configuration
 
