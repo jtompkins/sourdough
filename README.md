@@ -42,12 +42,15 @@ A Go-based recipe management application built with Fiber, SQLite, and server-si
 ## Quick Start
 
 1. **Install dependencies**:
+
    ```bash
    go mod download
-   go install github.com/a-h/templ/cmd/templ@latest
+   go install golang.org/x/tools/gopls@latest
+   go get -tool github.com/a-h/templ/cmd/templ@latest
    ```
 
 2. **Run the application**:
+
    ```bash
    make run
    ```
